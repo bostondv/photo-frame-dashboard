@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calendar week · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<link rel="stylesheet" href="calendar.css">
+<script src="shell.js"></script>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .cal { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  .cal-filter { display: none; }
+  .week { display: flex; flex-direction: column; gap: 10px; }
+  .day { overflow: visible; padding: 12px; }
+  .dh { padding: 0 2px 4px; }
+}
+</style>
+</head>
+<body data-view="calendar" data-title="October 2026">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="cal">
+        <div class="toolbar">
+          <div class="seg"><a href="calendar-day.html">Day</a><a class="on" href="calendar-week.html">Week</a><a href="calendar-month.html">Month</a></div>
+          <button class="btn icon"><i data-i="left"></i></button>
+          <button class="btn icon"><i data-i="right"></i></button>
+          <button class="btn">Today</button>
+          <span class="range">Oct 12 – 18</span>
+          <div class="grow"></div>
+          <div class="cal-filter"><span class="pill p-fam"><i></i>Family calendar</span></div>
+          <a class="btn dark" href="add-event.html"><i data-i="plus"></i>Add event</a>
+        </div>
+        <div class="week" id="week"></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<script>
+  // [person, title, time, place?, past?]
+  var D = [
+    { d: 'Mon', n: 12, today: true, all: [['poppy', 'Pajama Day'], ['fam', 'Garbage night']], ev: [
+      ['boston', 'School drop-off', '8:15 AM', '', 1], ['georgia', 'Dentist', '12:00 PM', '', 1],
+      ['poppy', 'Piano lesson', '3:45 PM'], ['georgia', 'Soccer practice', '4:30 PM', 'Lakeshore Fields'],
+      ['boston', 'Parent–teacher call', '5:00 PM'], ['fam', 'Dinner with Grandma', '6:30 PM'], ['poppy', 'Bath + books', '8:00 PM']] },
+    { d: 'Tue', n: 13, all: [['boston', 'Boston in Montréal']], ev: [
+      ['andrea', 'Gym', '7:00 AM'], ['andrea', 'School drop-off', '8:15 AM'], ['andrea', 'Vet — Biscuit', '10:30 AM', 'Riverdale Clinic'],
+      ['georgia', 'Art club', '3:30 PM'], ['poppy', 'Playdate with Theo', '4:00 PM'], ['andrea', 'Book club', '7:00 PM']] },
+    { d: 'Wed', n: 14, all: [['boston', 'Boston in Montréal']], ev: [
+      ['poppy', 'Science Centre trip', '9:00 AM'], ['georgia', 'Haircut', '1:00 PM'], ['georgia', 'Soccer practice', '4:30 PM'], ['fam', 'Pizza night', '6:00 PM']] },
+    { d: 'Thu', n: 15, all: [['boston', 'Boston in Montréal']], ev: [
+      ['andrea', 'Gym', '7:00 AM'], ['poppy', 'Piano lesson', '3:45 PM'], ['andrea', 'Yoga', '7:00 PM']] },
+    { d: 'Fri', n: 16, all: [], ev: [
+      ['boston', 'Flight home · AC 418', '5:05 PM', 'YUL → YYZ'], ['fam', 'Movie night', '7:30 PM']] },
+    { d: 'Sat', n: 17, we: true, all: [['fam', 'Grandma visits']], ev: [
+      ['poppy', 'Swim lessons', '10:00 AM'], ['andrea', 'Farmers market', '11:00 AM'], ['georgia', "Zoe's birthday", '1:00 PM', 'Pottery Place']] },
+    { d: 'Sun', n: 18, we: true, all: [['fam', 'Grandma visits']], ev: [
+      ['fam', 'Sunday brunch', '10:30 AM'], ['boston', 'Long run', '2:00 PM'], ['fam', 'Meal prep', '4:00 PM']] }
+  ];
+  document.getElementById('week').innerHTML = D.map(function (x) {
+    var h = '<div class="day' + (x.today ? ' today' : '') + (x.we ? ' weekend' : '') + '"><div class="dh"><b>' + x.n + '</b><span>' + x.d + '</span></div>';
+    x.all.forEach(function (a) { h += '<div class="ev allday p-' + a[0] + '"><b>' + a[1] + '</b></div>'; });
+    x.ev.forEach(function (e) {
+      h += '<div class="ev p-' + e[0] + (e[4] ? ' past' : '') + '"><small>' + e[2] + '</small><b>' + e[1] + '</b>' + (e[3] ? '<small>' + e[3] + '</small>' : '') + '</div>';
+    });
+    return h + '</div>';
+  }).join('');
+</script>
+</body>
+</html>

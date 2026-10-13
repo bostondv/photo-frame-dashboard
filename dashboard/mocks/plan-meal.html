@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan a meal · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .msheet { width: 900px; }
+  .when { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+  .days { display: flex; gap: 6px; }
+  .days span { width: 52px; padding: 7px 0; text-align: center; border-radius: 12px; font-size: 11px; font-weight: 800; color: var(--mute); background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); }
+  .days span b { display: block; font-size: 17px; color: var(--ink); }
+  .days span.on { background: var(--accent); color: rgba(255,255,255,.8); box-shadow: none; }
+  .days span.on b { color: #fff; }
+  .seg { margin-left: auto; }
+  .row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+  .search { flex: 1; height: 50px; border-radius: 14px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); display: flex; align-items: center; gap: 10px; padding: 0 16px; color: #B0AA9F; font-size: 16px; }
+  .chip { height: 40px; padding: 0 14px; border-radius: 999px; display: inline-flex; align-items: center; font-weight: 700; font-size: 14px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); color: var(--ink-2); white-space: nowrap; }
+  .chip.on { background: var(--accent); color: #fff; box-shadow: none; }
+  .picks { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .pk { border-radius: 16px; overflow: hidden; box-shadow: inset 0 0 0 1.5px var(--line); background: var(--surface-2); }
+  .pk .art { height: 92px; display: grid; place-items: center; font-size: 42px; }
+  .pk .tx { padding: 8px 10px 10px; }
+  .pk b { font-size: 14px; line-height: 1.2; display: block; }
+  .pk small { font-size: 11px; color: var(--mute); font-weight: 600; }
+  .pk.on { box-shadow: 0 0 0 3px var(--accent); }
+  .foot { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+  .foot .grow { flex: 1; }
+  .quick span { padding: 10px 14px; border-radius: 12px; background: var(--bg); font-size: 14px; font-weight: 700; margin-right: 6px; }
+  .serv { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; margin-right: 8px; }
+  .serv i { width: 32px; height: 32px; border-radius: 50%; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); display: grid; place-items: center; font-style: normal; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .when { flex-direction: column; align-items: stretch; }
+  .days { overflow-x: auto; }
+  .days span { flex: none; width: 46px; }
+  .seg { margin-left: 0; align-self: flex-start; }
+  .row { flex-wrap: wrap; } .search { flex-basis: 100%; }
+  .picks { grid-template-columns: 1fr 1fr; }
+  .foot { flex-wrap: wrap; } .foot .grow { display: none; }
+  .foot .btn { flex-basis: 100%; justify-content: center; height: 50px; }
+}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="frame bleed">
+  <iframe class="under" src="meals.html" tabindex="-1" aria-hidden="true"></iframe>
+  <div class="scrim"></div>
+  <div class="msheet" role="dialog" aria-label="Plan a meal">
+    <header><h2>Plan a meal</h2><a class="btn icon" href="meals.html"><i data-i="x"></i></a></header>
+    <div class="when">
+      <div class="days"><span>Mon<b>12</b></span><span>Tue<b>13</b></span><span>Wed<b>14</b></span><span>Thu<b>15</b></span><span class="on">Fri<b>16</b></span><span>Sat<b>17</b></span><span>Sun<b>18</b></span></div>
+      <div class="seg"><a>Breakfast</a><a>Lunch</a><a class="on">Dinner</a></div>
+    </div>
+    <div class="row">
+      <div class="search"><i data-i="search"></i>Search recipes</div>
+      <span class="chip on">Not had lately</span><span class="chip">♥ Favourites</span><span class="chip">Quick</span>
+    </div>
+    <div class="picks">
+      <div class="pk on"><div class="art" style="background:#FDE1E1">🍚</div><div class="tx"><b>Crispy gochujang tofu</b><small>New · 30 min</small></div></div>
+      <div class="pk"><div class="art" style="background:#FFF0C9">🍛</div><div class="tx"><b>Chicken katsu curry</b><small>Last Aug 30 · 45 min</small></div></div>
+      <div class="pk"><div class="art" style="background:#E0F2D8">🥗</div><div class="tx"><b>Greek chicken bowls</b><small>Last Aug 12 · 30 min</small></div></div>
+      <div class="pk"><div class="art" style="background:#FDE1E1">🍜</div><div class="tx"><b>Peanut noodles</b><small>Last Jul 28 · 20 min</small></div></div>
+      <div class="pk"><div class="art" style="background:#EDE6FF">🥘</div><div class="tx"><b>Lentil shepherd’s pie</b><small>Never · 60 min</small></div></div>
+    </div>
+    <div class="who-adding" style="margin-top:14px">Who’s adding? <span class="av p-boston">B</span><span class="av pick p-andrea">A</span><span class="av p-georgia">G</span><span class="av p-poppy">P</span><span class="skip">or just “Kitchen frame”</span></div>
+    <div class="foot">
+      <span class="quick"><span>🍱 Leftovers</span><span>🍽️ Eat out</span><span>✏️ Other…</span></span>
+      <div class="grow"></div>
+      <span class="serv">Serves <i>−</i>4<i>+</i></span>
+      <button class="btn dark">Add to Friday dinner</button>
+    </div>
+  </div>
+</div></div>
+</body>
+</html>

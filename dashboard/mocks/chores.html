@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chores · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<link rel="stylesheet" href="chores.css">
+<script src="shell.js"></script>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .wrap { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  .toolbar .when { display: none; }
+  .board { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -14px; padding: 0 14px 6px; scrollbar-width: none; }
+  .board { align-items: flex-start; }
+  .col { flex: 0 0 84%; scroll-snap-align: center; overflow: visible; }
+}
+</style>
+</head>
+<body data-view="chores" data-title="Chores">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="wrap">
+        <div class="toolbar">
+          <button class="btn icon"><i data-i="left"></i></button>
+          <button class="btn">Today</button>
+          <button class="btn icon"><i data-i="right"></i></button>
+          <span class="when">Monday, Oct 12</span>
+          <div class="grow"></div>
+          <a class="btn" href="rewards.html"><span style="color:#F0A01A;display:flex"><i data-i="star"></i></span>Rewards</a>
+          <a class="btn dark" href="add-chore.html"><i data-i="plus"></i>Add</a>
+        </div>
+        <div class="board" id="board"></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<script>
+  // Mock "now" is 3:20 PM, so Afternoon is the expanded part of the day.
+  // Routine/chore: [emoji, title, meta, stars, state]  state: 1 done, 2 late, or a profile id who did it (Household)
+  var S = window.MockIcon;
+  var B = [
+    { id: 'boston', name: 'Boston', i: 'B', parts: null,
+      chores: [['♻️', 'Take out recycling', '1 day late', 0, 2], ['☎️', 'Call the plumber', '', 0, 1], ['🧾', 'Pay daycare invoice', '5:00 PM', 0]] },
+    { id: 'andrea', name: 'Andrea', i: 'A', parts: { morning: [1, 1] },
+      chores: [['🧺', 'Fold laundry', '', 0], ['🎁', 'Order Zoe’s gift', '', 0, 1], ['📬', 'Return library books', '5:00 PM', 0]] },
+    { id: 'georgia', name: 'Georgia', i: 'G', kid: true, stars: 46, parts: { morning: [4, 4], evening: [0, 3] },
+      afternoon: [['🥪', 'Unpack lunchbox', '', 1, 1], ['📚', 'Homework', '', 2, 1], ['🎻', 'Violin 15 min', '', 2, 1]],
+      chores: [['⚽', 'Pack soccer bag', '4:15 PM', 1, 1]], party: true },
+    { id: 'poppy', name: 'Poppy', i: 'P', kid: true, stars: 57, parts: { morning: [3, 4], evening: [0, 3] },
+      afternoon: [['🥪', 'Unpack lunchbox', '', 1, 1], ['📖', 'Read 20 minutes', '', 2], ['🎹', 'Practice piano', '', 2, 1], ['🧱', 'Tidy the Lego', '', 1]],
+      chores: [['🐠', 'Feed the fish', '1 day late', 1, 2]] },
+    { id: 'fam', name: 'Household', i: '🏠', house: true, parts: null,
+      chores: [['🐕', 'Feed Biscuit', '', 1, 'georgia'], ['🍽️', 'Empty dishwasher', '', 2], ['🪴', 'Water the plants', 'Mondays', 1], ['🧽', 'Wipe counters', 'After dinner', 1]] }
+  ];
+  var PART = { morning: ['☀️', 'Morning'], afternoon: ['🌤️', 'Afternoon'], evening: ['🌙', 'Evening'] };
+  var INI = { boston: 'B', andrea: 'A', georgia: 'G', poppy: 'P' };
+
+  function task(t, routine) {
+    var st = t[4], done = st === 1 || typeof st === 'string';
+    var meta = [];
+    if (st === 2) meta.push('<span class="lt">' + t[2] + '</span>'); else if (t[2]) meta.push(t[2]);
+    if (t[3]) meta.push('<span class="s">' + S('star') + t[3] + '</span>');
+    var end = typeof st === 'string' ? '<div class="av by p-' + st + '" title="Done by">' + INI[st] + '</div>' : '<div class="check">' + S('check') + '</div>';
+    return '<div class="task' + (done ? ' done' : '') + (st === 2 ? ' late' : '') + '"><div class="em">' + t[0] + '</div><div class="tx"><b>' + t[1] + '</b>' +
+      (meta.length ? '<small>' + meta.join(' · ') + '</small>' : '') + '</div>' + end + '</div>';
+  }
+  function part(key, n) {
+    var done = n[0] === n[1];
+    return '<div class="part' + (done ? ' done' : '') + '">' + PART[key][0] + ' ' + PART[key][1] + '<span class="n">' + n[0] + '/' + n[1] + '</span>' + (done ? S('check') : S('chevron')) + '</div>';
+  }
+
+  document.getElementById('board').innerHTML = B.map(function (p) {
+    var all = (p.afternoon || []).concat(p.chores);
+    var total = all.length, done = all.filter(function (t) { return t[4] === 1 || typeof t[4] === 'string'; }).length;
+    if (p.parts && p.parts.morning) { total += p.parts.morning[1]; done += p.parts.morning[0]; }
+    var h = '<div class="col p-' + p.id + (p.house ? ' house' : '') + '"><div class="ch"><div class="av">' + p.i + '</div><div class="who"><b>' + p.name + '</b><small>' +
+      (p.house ? 'Anyone can do these' : done + ' of ' + total + ' done') + '</small></div>' +
+      (p.kid ? '<span class="stars">' + S('star') + p.stars + '</span>' : '') + '</div>';
+    if (!p.house) h += '<div class="bar"><i style="width:' + Math.round(done / total * 100) + '%"></i></div>';
+    if (p.parts && p.parts.morning) h += part('morning', p.parts.morning);
+    if (p.afternoon) { h += '<div class="sec">🌤️ Afternoon routine</div>' + p.afternoon.map(function (t) { return task(t, true); }).join(''); }
+    if (p.chores.length) h += '<div class="sec">Chores</div>' + p.chores.map(function (t) { return task(t); }).join('');
+    if (p.parts && p.parts.evening) h += part('evening', p.parts.evening);
+    if (p.party) h += '<div class="party"><div class="confetti"><span style="left:8%;top:10%">🎉</span><span style="right:10%;top:14%">✨</span><span style="left:16%;bottom:12%">⭐</span><span style="right:14%;bottom:10%">🎊</span></div>' +
+      '<span class="big">🙌</span>Afternoon done!<small>+6 stars today</small></div>';
+    return h + '</div>';
+  }).join('');
+</script>
+</body>
+</html>

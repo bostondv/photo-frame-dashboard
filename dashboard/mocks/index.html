@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Mocks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<style>
+  :root { --bg: #F5F3EE; --ink: #23211E; --mute: #8C877F; --line: #E2DDD3; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Figtree', system-ui, sans-serif; padding: 48px 40px 64px; }
+  header { max-width: 1400px; margin: 0 auto 32px; }
+  h1 { font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: 44px; }
+  header p { color: var(--mute); font-size: 17px; margin-top: 8px; max-width: 760px; line-height: 1.5; }
+  h2 { max-width: 1400px; margin: 36px auto 14px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
+  .grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(540px, 1fr)); gap: 32px 28px; }
+  a.card { text-decoration: none; color: inherit; display: block; }
+  /* Thumbnails render at real device sizes, then scale down, so each shows its true layout. */
+  .pair { display: flex; gap: 12px; align-items: flex-start; }
+  .shot, .pshot { overflow: hidden; background: #1C1B19; box-shadow: 0 2px 4px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.08); position: relative; flex: none; }
+  .shot { width: 400px; height: 250px; border-radius: 12px; }
+  .pshot { width: 116px; height: 251px; border-radius: 16px; border: 3px solid #1C1B19; }
+  .shot iframe, .pshot iframe { border: 0; pointer-events: none; display: block; transform-origin: 0 0; }
+  .shot iframe { width: 1280px; height: 800px; transform: scale(.3125); }
+  .pshot iframe { width: 390px; height: 844px; transform: scale(.2821); }
+  .sz { font-size: 11px; font-weight: 700; color: var(--mute); margin-top: 4px; text-align: center; }
+  .meta { padding: 12px 2px 0; }
+  .meta b { font-size: 17px; }
+  .meta p { color: var(--mute); font-size: 14px; margin-top: 3px; line-height: 1.4; }
+  @media (max-width: 600px) { body { padding: 28px 16px; } .grid { grid-template-columns: 1fr; } .shot { width: 224px; height: 140px; } .shot iframe { transform: scale(.175); } .pshot { width: 66px; height: 143px; } .pshot iframe { transform: scale(.16); } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Family dashboard · design mocks</h1>
+  <p>Static screens for the family dashboard plan, drawn at the frame's 1280×800 and inspired by Skylight Calendar. Mock “now” is Monday 12 October 2026, 3:20 PM. Every screen is responsive: the same page shows the frame layout on wide screens and the phone layout below 700 px, so each card shows both. Click to open; resize the window to see it switch.</p>
+</header>
+
+<h2>Frame · main views</h2>
+<div class="grid" id="main"></div>
+<h2>Frame · calendar</h2>
+<div class="grid" id="cal"></div>
+<h2>Frame · meals and recipes</h2>
+<div class="grid" id="mealsf"></div>
+<h2>Menu and photos</h2>
+<div class="grid" id="mealsp"></div>
+<h2>Setup &amp; sign-in</h2>
+<div class="grid" id="auth"></div>
+
+<script>
+  var S = {
+    main: [
+      ['home.html', 'Today (home)', 'Greeting, weather, today’s agenda with a now line, chores progress, dinner, on-this-day photo.'],
+      ['add-menu.html', 'Global Add', 'One Add button in the rail on every screen: event, chore, list item, meal, recipe.'],
+      ['chores.html', 'Chores', 'Skylight-style: a column per person plus Household. Routines by part of day, chores with late carry-over, stars.'],
+      ['add-chore.html', 'Add chore or routine', 'Name and emoji, who it’s for, repeat, part of day (routine) or time (chore), stars.'],
+      ['rewards.html', 'Rewards', 'Kids’ star balances, last 7 days, rewards to redeem.'],
+      ['lists.html', 'Lists', 'Google Tasks lists as a flat, three-column list. Ticked items stay at the end until cleared.'],
+      ['photos.html', 'Photos', 'Albums served from R2 through the Worker. Starts the slideshow.'],
+      ['weather.html', 'Weather', 'Open-Meteo. Opened from the weather chip in the top bar.'],
+      ['settings.html', 'Household and devices', 'Members from household.json (no roles), and every signed-in frame and phone with Remove. Opened from the avatars.'],
+      ['screensaver.html', 'Screensaver', 'Full-bleed R2 photos with clock, weather and the next event.']
+    ],
+    cal: [
+      ['calendar-week.html', 'Calendar · week', 'Skylight-style stacked day columns. Default calendar view.'],
+      ['calendar-day.html', 'Calendar · day', 'Time grid with a column per person.'],
+      ['calendar-month.html', 'Calendar · month', 'Month grid with multi-day bars and dots.'],
+      ['add-event.html', 'Add event', 'Write-back sheet: title, who, time, repeat, place, calendar.']
+    ],
+    mealsf: [
+      ['meals.html', 'Meals · week', 'Plan for the week. Tap a meal for its recipe, an empty slot to plan one, or Shop for the week.'],
+      ['plan-meal.html', 'Plan a meal', 'Pick the day and meal, then a recipe (not had lately first) or Leftovers / Eat out.'],
+      ['recipes.html', 'Recipes', 'Top-level tab: the library with search and filters.'],
+      ['add-recipe.html', 'Add a recipe', 'Link, caption or typed on the frame, with a QR hand-off to a phone for photos and long text.'],
+      ['review-recipe.html', 'Check the draft', 'Every import lands here: guessed and missing amounts flagged, parsed amount, unit and item on each line.'],
+      ['edit-recipe.html', 'Edit recipe', 'Details, ingredient lines with their parsed reading, and steps.'],
+      ['recipe.html', 'Recipe', 'Ingredients with servings scaling, steps with ingredients and times highlighted, QR to open the original on a phone.'],
+      ['add-groceries.html', 'Add to Groceries', 'One recipe’s ingredients: untick what you have; pantry staples and items already on the list start unticked.'],
+      ['shop-week.html', 'Shop for the week', 'Every planned meal’s ingredients combined and scaled, with meals you can leave out.'],
+      ['cook.html', 'Cook mode', 'One big step at a time, this step’s ingredients highlighted, tap a time for a timer, huge Back / Next.']
+    ],
+    mealsp: [
+      ['menu.html', 'Menu', 'Where the phone’s header menu button goes: Chores, Recipes, Photos, Weather, Household, Devices.'],
+      ['upload-photos.html', 'Add photos', 'Resized on the device before upload, duplicates skipped, GPS dropped. The frame also offers a QR to add from a phone.']
+    ],
+    auth: [
+      ['pair.html', 'Frame pairing', 'What an unpaired frame shows: a 6-digit code and a QR code for a signed-in phone.'],
+      ['phone.html', 'Phone: sign in + approve', 'Continue with Google or an emailed code, then approve a frame with its code and a name.']
+    ]
+  };
+  Object.keys(S).forEach(function (k) {
+    document.getElementById(k).innerHTML = S[k].map(function (s) {
+      return '<a class="card" href="' + s[0] + '"><div class="pair"><div><div class="shot"><iframe src="' + s[0] + '" loading="lazy" tabindex="-1" title="' + s[1] + ' on the frame"></iframe></div><div class="sz">Frame · 1280×800</div></div>' +
+        '<div><div class="pshot"><iframe src="' + s[0] + '" loading="lazy" tabindex="-1" title="' + s[1] + ' on a phone"></iframe></div><div class="sz">Phone</div></div></div>' +
+        '<div class="meta"><b>' + s[1] + '</b><p>' + s[2] + '</p></div></a>';
+    }).join('');
+  });
+</script>
+</body>
+</html>

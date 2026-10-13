@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recipes · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .wrap { display: grid; grid-template-rows: 52px 1fr; gap: 14px; height: 100%; }
+  .toolbar { display: flex; align-items: center; gap: 10px; }
+  .toolbar .grow { flex: 1; }
+  .search { width: 300px; height: 48px; border-radius: 999px; background: var(--surface); box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px; padding: 0 18px; color: #B0AA9F; font-size: 16px; font-weight: 500; }
+  .search svg { color: var(--mute); }
+  .chip { height: 44px; padding: 0 16px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 15px; background: var(--surface); box-shadow: var(--shadow); color: var(--ink-2); }
+  .chip.on { background: var(--accent); color: #fff; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); grid-auto-rows: 1fr; gap: 14px; min-height: 0; }
+  .rc { overflow: hidden; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+  .rc .art { flex: 1; display: grid; place-items: center; font-size: 56px; position: relative; min-height: 0; }
+  .rc .fav { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.92); display: grid; place-items: center; }
+  .rc .fav svg { width: 16px; height: 16px; color: #E5484D; fill: #E5484D; }
+  .rc .tag { position: absolute; top: 10px; left: 10px; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,.92); color: var(--ink-2); }
+  .rc .tx { padding: 10px 12px 12px; }
+  .rc b { font-size: 15px; line-height: 1.2; display: block; }
+  .rc small { font-size: 12px; color: var(--mute); font-weight: 600; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .wrap { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  .search { width: 230px; height: 42px; font-size: 14px; }
+  .chip { height: 40px; font-size: 14px; }
+  .grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 190px; gap: 10px; }
+}
+</style>
+</head>
+<body data-view="book" data-title="Recipes" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="wrap">
+        <div class="toolbar">
+          <div class="search"><i data-i="search"></i>Search 86 recipes</div>
+          <span class="chip on">All</span><span class="chip">♥ Favourites</span><span class="chip">Not had lately</span><span class="chip">Quick</span><span class="chip">Baking</span>
+          <div class="grow"></div>
+          <a class="btn dark" href="add-recipe.html"><i data-i="plus"></i>Add recipe</a>
+        </div>
+        <div class="grid" id="grid"></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+<script>
+  // [emoji, bg, title, meta, fav, tag]
+  var R = [
+    ['🌮', '#FFE3C4', 'Sheet-pan chicken fajitas', '35 min · cooked 4×', 1, 'Tonight'],
+    ['🍝', '#E0F2D8', 'Rigatoni alla vodka', '30 min · cooked 6×'],
+    ['🐟', '#E3EBFE', 'Miso-glazed salmon', '25 min · cooked 3×', 1],
+    ['🍚', '#FDE1E1', 'Crispy gochujang tofu', '30 min · new', 0, 'New'],
+    ['🍲', '#DDF1F0', 'Slow-cooker chili', '8 hr · cooked 5×'],
+    ['🍛', '#FFF0C9', 'Chicken katsu curry', '45 min · last Aug 30'],
+    ['🥗', '#E0F2D8', 'Greek chicken bowls', '30 min · last Aug 12', 1],
+    ['🍜', '#FDE1E1', 'Peanut noodles', '20 min · last Jul 28'],
+    ['🥞', '#EDE6FF', 'Grandma’s pancakes', '20 min · family', 1],
+    ['🍪', '#FFF0C9', 'Brown butter cookies', '40 min · makes 24']
+  ];
+  document.getElementById('grid').innerHTML = R.map(function (r) {
+    return '<a class="card rc" href="recipe.html"><div class="art" style="background:' + r[1] + '">' + r[0] +
+      (r[4] ? '<span class="fav">' + MockIcon('heart') + '</span>' : '') + (r[5] ? '<span class="tag">' + r[5] + '</span>' : '') +
+      '</div><div class="tx"><b>' + r[2] + '</b><small>' + r[3] + '</small></div></a>';
+  }).join('');
+</script>
+</body>
+</html>

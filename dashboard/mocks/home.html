@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Today · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .home { display: grid; grid-template-columns: 340px 1fr 320px; gap: 20px; height: 100%; }
+  .col { display: flex; flex-direction: column; gap: 20px; min-height: 0; }
+
+  .greet { padding: 22px 24px; }
+  .greet h2 { font-family: var(--display); font-weight: 400; font-size: 38px; line-height: 1.05; letter-spacing: -.01em; }
+  .greet p { margin-top: 10px; font-size: 16px; color: var(--ink-2); line-height: 1.45; }
+  .greet p b { color: var(--ink); }
+
+  .wx { padding: 20px 22px; }
+  .wx-now { display: flex; align-items: center; gap: 14px; }
+  .wx-now svg { width: 64px; height: 64px; }
+  .wx-now .t { font-size: 56px; font-weight: 700; letter-spacing: -.03em; line-height: 1; }
+  .wx-now .d { font-size: 15px; color: var(--mute); font-weight: 600; line-height: 1.4; }
+  .wx-alert { margin: 14px 0 12px; padding: 10px 12px; border-radius: 12px; background: #E8F0FE; color: #1F46A8; font-size: 14px; font-weight: 600; display: flex; gap: 8px; align-items: center; }
+  .hours { display: grid; grid-template-columns: repeat(6, 1fr); text-align: center; font-size: 13px; color: var(--mute); font-weight: 600; }
+  .hours svg { width: 30px; height: 30px; margin: 4px auto; display: block; }
+  .hours b { display: block; color: var(--ink); font-size: 16px; }
+
+  .dinner { overflow: hidden; flex: 1; display: flex; flex-direction: column; }
+  .dinner .ph { flex: 1; min-height: 110px; display: grid; place-items: center; font-size: 72px; background: radial-gradient(circle at 30% 30%, #FFE7C2, #FFD0A8 60%, #FBB98F); }
+  .dinner .bd { padding: 14px 20px 18px; }
+  .dinner h3 { font-size: 21px; font-weight: 700; margin-top: 4px; }
+  .dinner p { font-size: 14px; color: var(--mute); margin-top: 2px; }
+
+  /* agenda */
+  .agenda { padding: 20px 22px; display: flex; flex-direction: column; min-height: 0; }
+  .agenda header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+  .agenda header h2 { font-size: 22px; font-weight: 700; }
+  .alldays { display: flex; gap: 8px; margin-bottom: 12px; }
+  .alldays .ev { flex: 1; }
+  .rows { display: flex; flex-direction: column; gap: 8px; }
+  .row { display: grid; grid-template-columns: 74px 1fr; align-items: center; gap: 10px; }
+  .row time { font-size: 15px; font-weight: 700; color: var(--ink-2); text-align: right; }
+  .row time small { display: block; font-size: 12px; color: var(--mute); font-weight: 600; }
+  .row .ev { display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 16px; }
+  .row .ev .grow { flex: 1; min-width: 0; }
+  .row.past time { color: var(--mute); }
+  .now { display: grid; grid-template-columns: 74px 1fr; gap: 10px; align-items: center; margin: 2px 0; }
+  .now span { text-align: right; font-size: 12px; font-weight: 800; color: #E5484D; }
+  .now i { height: 2px; background: #E5484D; position: relative; border-radius: 2px; }
+  .now i::before { content: ''; position: absolute; left: -5px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: #E5484D; }
+  .tmrw { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line); display: flex; gap: 10px; align-items: center; font-size: 14px; }
+  .tmrw .label { margin-right: 4px; }
+  .tmrw .pill { font-weight: 600; white-space: nowrap; }
+  .soon { font-size: 12px; font-weight: 800; background: var(--c); color: #fff; padding: 3px 8px; border-radius: 999px; }
+
+  /* chores */
+  .chores { padding: 20px 22px; }
+  .chores h2 { font-size: 20px; font-weight: 700; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: baseline; }
+  .chores h2 a { font-size: 14px; color: var(--mute); text-decoration: none; font-weight: 600; }
+  .people { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; }
+  .ring { width: 62px; height: 62px; margin: 0 auto 6px; position: relative; }
+  .ring svg { width: 62px; height: 62px; transform: rotate(-90deg); }
+  .ring .av { position: absolute; inset: 9px; width: 44px; height: 44px; box-shadow: none; }
+  .people b { font-size: 14px; display: block; }
+  .people small { font-size: 12px; color: var(--mute); font-weight: 600; }
+
+  .memory { flex: 1; position: relative; overflow: hidden; background: center/cover url(https://picsum.photos/seed/tofino-surf/640/720); color: #fff; }
+  .memory::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.6)); }
+  .memory > div { position: absolute; left: 20px; right: 20px; bottom: 18px; z-index: 1; }
+  .memory .label { color: rgba(255,255,255,.85); }
+  .memory h3 { font-family: var(--display); font-weight: 400; font-size: 28px; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .home { display: flex; flex-direction: column; gap: 14px; height: auto; }
+  .col { display: contents; }
+  .greet { order: 1; padding: 18px; } .greet h2 { font-size: 28px; }
+  .agenda { order: 2; padding: 16px 14px; }
+  .row { grid-template-columns: 62px 1fr; }
+  .row .ev small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tmrw { flex-wrap: wrap; }
+  .dinner { order: 3; flex: none; } .dinner .ph { flex: none; height: 110px; min-height: 0; font-size: 56px; }
+  .chores { order: 4; }
+  .wx { order: 5; }
+  .memory { order: 6; flex: none; height: 220px; }
+}
+</style>
+</head>
+<body data-view="home" data-title="Monday, October 12">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="home">
+
+        <div class="col">
+          <section class="card greet">
+            <h2>Good afternoon, family</h2>
+            <p><b>Piano</b> is next for Poppy in 25 min. Rain starts around 4 — Georgia needs a jacket for soccer.</p>
+          </section>
+
+          <a class="card wx" href="weather.html" style="text-decoration:none;color:inherit">
+            <div class="wx-now"><i data-i="partly"></i><div><div class="t">14°</div></div><div class="d">Partly cloudy<br>Feels like 12°</div></div>
+            <div class="wx-alert"><i data-i="drop" class="i"></i>Rain likely 4 – 8 PM (80%)</div>
+            <div class="hours">
+              <div>4 PM<i data-i="rain"></i><b>15°</b></div>
+              <div>5 PM<i data-i="rain"></i><b>14°</b></div>
+              <div>6 PM<i data-i="rain"></i><b>13°</b></div>
+              <div>7 PM<i data-i="cloud"></i><b>12°</b></div>
+              <div>8 PM<i data-i="cloud"></i><b>12°</b></div>
+              <div>9 PM<i data-i="night"></i><b>11°</b></div>
+            </div>
+          </a>
+
+          <a class="card dinner" href="recipe.html" style="text-decoration:none;color:inherit">
+            <div class="ph">🌮</div>
+            <div class="bd">
+              <div class="label">Dinner tonight</div>
+              <h3>Sheet-pan chicken fajitas</h3>
+              <p>From the meal plan · 35 min</p>
+            </div>
+          </a>
+        </div>
+
+        <section class="card agenda">
+          <header><h2>Today</h2><span class="muted" style="font-weight:600">7 events</span></header>
+          <div class="alldays">
+            <div class="ev allday p-poppy"><b>Pajama Day at school</b></div>
+            <div class="ev allday p-fam"><b>Garbage + recycling night</b></div>
+          </div>
+          <div class="rows">
+            <div class="row past"><time>8:15 AM</time><div class="ev past p-boston"><div class="grow"><b>School drop-off</b><small>Parkdale Elementary</small></div></div></div>
+            <div class="row past"><time>12:00 PM</time><div class="ev past p-georgia"><div class="grow"><b>Dentist</b><small>Bright Smiles Dental</small></div><div class="stack"><div class="av xs p-georgia">G</div><div class="av xs p-andrea">A</div></div></div></div>
+            <div class="now"><span>3:20</span><i></i></div>
+            <div class="row"><time>3:45 PM<small>45 min</small></time><div class="ev p-poppy"><div class="grow"><b>Piano lesson</b><small>Ms. Park's Studio · bring theory book</small></div><span class="soon">in 25 min</span></div></div>
+            <div class="row"><time>4:30 PM<small>1.5 hr</small></time><div class="ev p-georgia"><div class="grow"><b>Soccer practice</b><small>Lakeshore Fields</small></div></div></div>
+            <div class="row"><time>5:00 PM<small>30 min</small></time><div class="ev p-boston"><div class="grow"><b>Parent–teacher call</b><small>Zoom</small></div><div class="stack"><div class="av xs p-boston">B</div><div class="av xs p-andrea">A</div></div></div></div>
+            <div class="row"><time>6:30 PM<small>1 hr</small></time><div class="ev p-fam"><div class="grow"><b>Dinner with Grandma</b><small>Home</small></div></div></div>
+            <div class="row"><time>8:00 PM<small>30 min</small></time><div class="ev p-poppy"><div class="grow"><b>Bath + books</b></div></div></div>
+          </div>
+          <div class="tmrw"><span class="label">Tomorrow</span><span class="pill p-boston">Boston in Montréal</span><span class="pill p-andrea">10:30 Vet</span><span class="muted">+4 more</span></div>
+        </section>
+
+        <div class="col">
+          <section class="card chores">
+            <h2>Chores <a href="chores.html">See all</a></h2>
+            <div class="people">
+              <div class="p-boston"><div class="ring"><svg viewBox="0 0 62 62"><circle cx="31" cy="31" r="28" fill="none" stroke="var(--line)" stroke-width="5"/><circle cx="31" cy="31" r="28" fill="none" stroke="var(--c)" stroke-width="5" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="117"/></svg><div class="av">B</div></div><b>Boston</b><small>1 of 3</small></div>
+              <div class="p-andrea"><div class="ring"><svg viewBox="0 0 62 62"><circle cx="31" cy="31" r="28" fill="none" stroke="var(--line)" stroke-width="5"/><circle cx="31" cy="31" r="28" fill="none" stroke="var(--c)" stroke-width="5" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="88"/></svg><div class="av">A</div></div><b>Andrea</b><small>2 of 4</small></div>
+              <div class="p-georgia"><div class="ring"><svg viewBox="0 0 62 62"><circle cx="31" cy="31" r="28" fill="none" stroke="var(--line)" stroke-width="5"/><circle cx="31" cy="31" r="28" fill="none" stroke="var(--c)" stroke-width="5" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="0"/></svg><div class="av">G</div></div><b>Georgia</b><small>8 of 8 · ★46</small></div>
+              <div class="p-poppy"><div class="ring"><svg viewBox="0 0 62 62"><circle cx="31" cy="31" r="28" fill="none" stroke="var(--line)" stroke-width="5"/><circle cx="31" cy="31" r="28" fill="none" stroke="var(--c)" stroke-width="5" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="78"/></svg><div class="av">P</div></div><b>Poppy</b><small>5 of 9 · ★57</small></div>
+            </div>
+          </section>
+
+          <a class="card memory" href="photos.html">
+            <div><div class="label">On this day · 2021</div><h3>Tofino, BC</h3></div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div></div>
+</body>
+</html>

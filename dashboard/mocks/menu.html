@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menu · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; }
+  .me { display: flex; align-items: center; gap: 14px; padding: 16px 18px; grid-column: 1 / -1; }
+  .me b { display: block; font-size: 18px; }
+  .me small { font-size: 13px; color: var(--mute); font-weight: 600; }
+  .grp { padding: 6px 10px; }
+  .mi { display: flex; align-items: center; gap: 14px; padding: 14px 8px; border-bottom: 1px solid var(--line); font-size: 17px; font-weight: 700; text-decoration: none; color: inherit; }
+  .mi:last-child { border-bottom: 0; }
+  .mi svg { width: 24px; height: 24px; color: var(--ink-2); }
+  .mi small { margin-left: auto; font-size: 13px; color: var(--mute); font-weight: 600; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .menu { grid-template-columns: 1fr; gap: 12px; }
+}
+</style>
+</head>
+<body data-view="" data-title="Menu" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="menu">
+        <div class="card me"><span class="av p-boston">B</span><div><b>Boston</b><small>Signed in with Google · this iPhone</small></div></div>
+        <div class="card grp">
+          <a class="mi" href="chores.html"><i data-i="chores"></i>Chores<small>1 late</small></a>
+          <a class="mi" href="recipes.html"><i data-i="book"></i>Recipes<small>86</small></a>
+          <a class="mi" href="photos.html"><i data-i="photos"></i>Photos</a>
+          <a class="mi" href="weather.html"><i data-i="partly"></i>Weather</a>
+        </div>
+        <div class="card grp">
+          <a class="mi" href="settings.html"><i data-i="users"></i>Household</a>
+          <a class="mi" href="settings.html"><i data-i="phone"></i>Devices<small>5</small></a>
+          <a class="mi" href="phone.html"><i data-i="lock"></i>Sign out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+</body>
+</html>

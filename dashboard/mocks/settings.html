@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Household and devices · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .set { display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; height: 100%; }
+  .card { padding: 20px 22px; display: flex; flex-direction: column; min-height: 0; }
+  .card h2 { font-size: 21px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .card h2 small { font-size: 13px; color: var(--mute); font-weight: 600; margin-left: auto; }
+  .card > p { font-size: 13px; color: var(--mute); font-weight: 600; margin: 4px 0 12px; line-height: 1.4; }
+  .m { display: grid; grid-template-columns: 48px 1fr auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .m .av { width: 46px; height: 46px; }
+  .m b { font-size: 17px; display: block; }
+  .m small { font-size: 13px; color: var(--mute); font-weight: 600; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .m small span { display: inline-flex; align-items: center; gap: 4px; }
+  .m small svg { width: 13px; height: 13px; }
+  .tag { font-size: 12px; font-weight: 800; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
+  .tag.in { background: #DCF3E8; color: #136B48; }
+  .tag.kid { background: var(--bg); color: var(--ink-2); }
+  .cfg { margin-top: auto; padding: 12px 14px; border-radius: 12px; background: var(--bg); font-size: 13px; color: var(--ink-2); font-weight: 600; line-height: 1.45; }
+  .cfg code { font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: #fff; padding: 1px 6px; border-radius: 6px; }
+  .d { display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .d .ic { width: 42px; height: 42px; border-radius: 12px; background: var(--bg); display: grid; place-items: center; }
+  .d b { font-size: 16px; display: block; }
+  .d small { font-size: 12px; color: var(--mute); font-weight: 600; }
+  .d .this { font-size: 11px; font-weight: 800; color: #136B48; background: #DCF3E8; padding: 3px 8px; border-radius: 999px; margin-left: 6px; vertical-align: 2px; }
+  .d .btn { height: 38px; padding: 0 14px; font-size: 14px; box-shadow: inset 0 0 0 1.5px var(--line-2); }
+  .pair { margin-top: auto; display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 16px; background: var(--bg); }
+  .pair svg.qr { width: 84px; height: 84px; flex: none; }
+  .pair b { font-size: 15px; display: block; }
+  .pair small { font-size: 13px; color: var(--mute); font-weight: 600; line-height: 1.4; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .set { grid-template-columns: 1fr; height: auto; }
+  .card { padding: 16px; }
+  .m small { font-size: 12px; }
+  .pair { margin-top: 12px; }
+}
+</style>
+</head>
+<body data-view="" data-title="Household" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="set">
+        <section class="card">
+          <h2>Family <small>From household.json</small></h2>
+          <p>Members tie together calendar colours, chore columns, stars and “added by”. Anyone signed in can do everything. There are no roles.</p>
+          <div class="m p-boston"><div class="av">B</div><div><b>Boston</b><small><span><i data-i="mail"></i>boston@family.example</span><span><i data-i="calendar"></i>Boston’s calendar</span></small></div><span class="tag in">Signs in</span></div>
+          <div class="m p-andrea"><div class="av">A</div><div><b>Andrea</b><small><span><i data-i="mail"></i>andrea@family.example</span><span><i data-i="calendar"></i>Andrea’s calendar</span></small></div><span class="tag in">Signs in</span></div>
+          <div class="m p-georgia"><div class="av">G</div><div><b>Georgia</b><small><span><i data-i="calendar"></i>Family calendar</span><span><i data-i="star"></i>Stars on</span></small></div><span class="tag kid">Profile only</span></div>
+          <div class="m p-poppy"><div class="av">P</div><div><b>Poppy</b><small><span><i data-i="calendar"></i>Family calendar</span><span><i data-i="star"></i>Stars on</span></small></div><span class="tag kid">Profile only</span></div>
+          <div class="cfg">To add someone or change a colour or calendar, edit <code>household.json</code> and deploy. Members with an email can sign in with Google or an emailed code.</div>
+        </section>
+        <section class="card">
+          <h2>Devices <small>5 signed in</small></h2>
+          <p>Every frame and phone with access. Removing one signs it out on its next request.</p>
+          <div class="d"><span class="ic">🖼️</span><div><b>Kitchen frame<span class="this">This device</span></b><small>Paired by Boston · Mar 2 · expires Mar 2027</small></div><span></span></div>
+          <div class="d"><span class="ic">🖼️</span><div><b>Hallway frame</b><small>Paired by Andrea · Sep 18 · seen 3 min ago</small></div><button class="btn">Remove</button></div>
+          <div class="d"><span class="ic">📱</span><div><b>Boston · iPhone</b><small>Google sign-in · seen just now</small></div><button class="btn">Remove</button></div>
+          <div class="d"><span class="ic">📱</span><div><b>Andrea · Pixel</b><small>Google sign-in · seen 1 hr ago</small></div><button class="btn">Remove</button></div>
+          <div class="d"><span class="ic">💻</span><div><b>Boston · Mac</b><small>Email code · seen Oct 9</small></div><button class="btn">Remove</button></div>
+          <div class="pair"><svg class="qr"></svg><div><b>Add a frame or tablet</b><small>Open the dashboard on the new device. It shows a code and a QR code. Scan it with a signed-in phone to approve.</small></div></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div></div>
+</body>
+</html>

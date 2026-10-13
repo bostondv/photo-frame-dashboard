@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phone sign-in · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .frame.bleed { background: #E9E5DC; }
+  .row { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; gap: 40px; padding-bottom: 30px; }
+  .col { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .cap { font-size: 15px; font-weight: 700; color: var(--ink-2); }
+  .cap b { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; margin-right: 6px; }
+  .phone { width: 330px; height: 690px; border-radius: 48px; background: #151413; padding: 11px; box-shadow: var(--shadow-lg); }
+  .scr { width: 100%; height: 100%; border-radius: 38px; background: var(--surface); overflow: hidden; position: relative; display: flex; flex-direction: column; padding: 58px 24px 28px; }
+  .scr::before { content: ''; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 96px; height: 28px; border-radius: 99px; background: #151413; }
+  .sb { position: absolute; top: 16px; left: 30px; right: 30px; display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; }
+  .logo { width: 48px; height: 48px; border-radius: 15px; background: var(--accent); color: #fff; display: grid; place-items: center; margin-bottom: 20px; }
+  h2 { font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1.08; }
+  p { font-size: 15px; color: var(--ink-2); line-height: 1.45; margin-top: 8px; }
+  .lbl { font-size: 13px; font-weight: 700; color: var(--mute); margin: 22px 0 6px; }
+  .in { height: 52px; border-radius: 14px; box-shadow: inset 0 0 0 2px var(--focus); display: flex; align-items: center; padding: 0 16px; font-size: 17px; font-weight: 600; }
+  .in.quiet { box-shadow: inset 0 0 0 1.5px var(--line-2); }
+  .go { margin-top: 16px; height: 54px; border-radius: 16px; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 17px; }
+  .go.google { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line-2); display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 22px; }
+  .or { display: flex; align-items: center; gap: 10px; margin: 18px 0 2px; font-size: 12px; font-weight: 700; color: var(--mute); }
+  .or::before, .or::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .go.ghost { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line-2); margin-top: 10px; }
+  .fine { margin-top: auto; font-size: 13px; color: var(--mute); text-align: center; line-height: 1.45; }
+  .otp { display: flex; gap: 7px; margin-top: 22px; }
+  .otp span { flex: 1; min-width: 0; height: 58px; border-radius: 13px; box-shadow: inset 0 0 0 1.5px var(--line-2); display: grid; place-items: center; font-size: 26px; font-weight: 800; }
+  .otp span.cur { box-shadow: inset 0 0 0 2px var(--focus); }
+  .otp span.cur::after { content: ''; width: 2px; height: 26px; background: var(--focus); }
+  .details { margin-top: 16px; border-radius: 16px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line); padding: 4px 14px; }
+  .details div { display: flex; justify-content: space-between; padding: 9px 0; font-size: 14px; font-weight: 600; }
+  .details div + div { border-top: 1px solid var(--line); }
+  .details span:first-child { color: var(--mute); }
+  .warn { margin-top: 12px; font-size: 12.5px; color: #8A5700; background: #FFF4DA; padding: 10px 12px; border-radius: 12px; line-height: 1.4; font-weight: 600; }
+  .small-otp span { height: 48px; font-size: 22px; }
+</style>
+<style>
+/* phone layout (this page): on a real phone the storyboard drops the bezels; swipe between screens */
+@media (max-width: 700px) {
+  .frame.bleed { background: var(--surface); }
+  .row { justify-content: flex-start; align-items: stretch; gap: 0; padding: 0; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .col { flex: 0 0 100vw; scroll-snap-align: start; gap: 0; }
+  .cap { display: none; }
+  .phone { width: 100%; height: 100%; padding: 0; border-radius: 0; background: none; box-shadow: none; }
+  .scr { border-radius: 0; padding-top: 40px; }
+  .scr::before, .sb { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="frame bleed">
+  <div class="row">
+
+    <div class="col">
+      <div class="phone"><div class="scr">
+        <div class="sb"><span>3:17</span><span>●●● ▮</span></div>
+        <div class="logo"><i data-i="home"></i></div>
+        <h2>Sign in to the family dashboard</h2>
+        <p>For family members in the household.</p>
+        <div class="go google"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.6a4.8 4.8 0 01-2.1 3.1v2.6h3.4c2-1.8 3.1-4.5 3.1-7.5z"/><path fill="#34A853" d="M12 22c2.8 0 5.2-.9 6.9-2.5l-3.4-2.6c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.3H2.7v2.7A10 10 0 0012 22z"/><path fill="#FBBC05" d="M6.2 13.6a6 6 0 010-3.8V7.1H2.7a10 10 0 000 9.2z"/><path fill="#EA4335" d="M12 5.9c1.5 0 2.9.5 4 1.5l3-3A10 10 0 002.7 7.1l3.5 2.7C7 7.7 9.3 5.9 12 5.9z"/></svg>Continue with Google</div>
+        <div class="or"><span>or get a code by email</span></div>
+        <div class="in quiet">boston@family.example</div>
+        <div class="go ghost">Email me a code</div>
+        <div class="fine">Private site. Only approved family addresses receive a code.</div>
+      </div></div>
+      <div class="cap"><b>1</b>Sign in</div>
+    </div>
+
+    <div class="col">
+      <div class="phone"><div class="scr">
+        <div class="sb"><span>3:18</span><span>●●● ▮</span></div>
+        <div class="logo"><i data-i="mail"></i></div>
+        <h2>Check your email</h2>
+        <p>If you chose email: we sent a code to <b>boston@family.example</b>. It expires in 10 minutes.</p>
+        <div class="otp"><span>7</span><span>3</span><span>0</span><span>5</span><span class="cur"></span><span></span></div>
+        <div class="go">Sign in</div>
+        <div class="go ghost">Resend code</div>
+        <div class="fine">Keep me signed in on this phone for 30 days</div>
+      </div></div>
+      <div class="cap"><b>2</b>Email code (fallback)</div>
+    </div>
+
+    <div class="col">
+      <div class="phone"><div class="scr">
+        <div class="sb"><span>3:19</span><span>●●● ▮</span></div>
+        <h2>Approve a frame</h2>
+        <p>Type the code shown on the frame.</p>
+        <div class="otp small-otp"><span>4</span><span>8</span><span>2</span><span>9</span><span>1</span><span>3</span></div>
+        <div class="lbl">Name this frame</div>
+        <div class="in quiet">Kitchen frame</div>
+        <div class="details">
+          <div><span>Device</span><span>Android WebView</span></div>
+          <div><span>Near</span><span>Toronto, ON</span></div>
+          <div><span>Requested</span><span>3:18 PM · 1 min ago</span></div>
+        </div>
+        <div class="warn">Only approve if you're standing at this frame and set it up yourself.</div>
+        <div class="go">Approve for 1 year</div>
+      </div></div>
+      <div class="cap"><b>3</b>Pair the frame</div>
+    </div>
+
+  </div>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add chore · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .under { position: absolute; inset: 0; width: 1280px; height: 800px; border: 0; pointer-events: none; }
+  .scrim { position: absolute; inset: 0; background: rgba(28, 26, 22, .42); }
+  .sheet { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 760px; background: var(--surface); border-radius: var(--r-xl); box-shadow: var(--shadow-lg); padding: 24px 30px 22px; }
+  .sheet header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .sheet header h2 { font-size: 24px; font-weight: 700; flex: 1; }
+  .name { display: flex; align-items: center; gap: 14px; padding-bottom: 12px; border-bottom: 2px solid var(--focus); }
+  .emoji { width: 58px; height: 58px; border-radius: 16px; background: #FFF0D2; display: grid; place-items: center; font-size: 32px; box-shadow: inset 0 0 0 1.5px var(--line-2); position: relative; }
+  .emoji::after { content: '✎'; position: absolute; right: -4px; bottom: -4px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; display: grid; place-items: center; }
+  .name .t { font-size: 28px; font-weight: 700; display: flex; align-items: center; }
+  .caret { width: 2px; height: 30px; background: var(--focus); margin-left: 2px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .row { display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .row > span { font-size: 14px; font-weight: 700; color: var(--mute); }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); font-weight: 700; font-size: 15px; color: var(--ink-2); }
+  .chip.person { padding-left: 5px; }
+  .chip .av { width: 30px; height: 30px; font-size: 12px; }
+  .chip.on { background: var(--soft); color: var(--tx); box-shadow: inset 0 0 0 2px var(--c); }
+  .chip.sel { background: var(--accent); color: #fff; box-shadow: none; }
+  .days { display: flex; gap: 6px; margin-left: 6px; }
+  .days b { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); color: var(--ink-2); }
+  .days b.on { background: var(--accent); color: #fff; box-shadow: none; }
+  .hint { font-size: 13px; color: var(--mute); font-weight: 600; margin-top: 6px; }
+  .stepper { display: inline-flex; align-items: center; gap: 14px; font-size: 18px; font-weight: 800; }
+  .stepper button { width: 38px; height: 38px; border-radius: 50%; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); font-size: 20px; font-weight: 700; }
+  .stepper .s { color: #F0A01A; display: flex; }
+  .actions { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+  .actions .grow { flex: 1; }
+  .actions .btn { height: 54px; padding: 0 26px; font-size: 17px; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .under { width: 100%; height: 100%; }
+  .sheet { left: 0; right: 0; top: auto; bottom: 0; transform: none; width: auto; max-height: 92%; overflow-y: auto; border-radius: 26px 26px 0 0; padding: 18px 16px 22px; }
+  .sheet header { flex-wrap: wrap; }
+  .name .t { font-size: 22px; }
+  .row { grid-template-columns: 1fr; gap: 6px; }
+  .days b { width: 30px; height: 30px; }
+  .actions { flex-wrap: wrap; } .actions .hint { flex-basis: 100%; }
+}
+</style>
+</head>
+<body data-view="chores">
+<div class="viewport"><div class="frame bleed">
+  <iframe class="under" src="chores.html" tabindex="-1" aria-hidden="true"></iframe>
+  <div class="scrim"></div>
+  <div class="sheet" role="dialog" aria-label="New chore">
+    <header><h2>New</h2><div class="seg"><a>Chore</a><a class="on">Routine</a></div><button class="btn icon"><i data-i="x"></i></button></header>
+    <div class="name"><div class="emoji">🦷</div><div class="t">Brush teeth<span class="caret"></span></div></div>
+
+    <div class="row"><span>For</span>
+      <div>
+        <div class="chips">
+          <span class="chip person p-boston"><span class="av">B</span>Boston</span>
+          <span class="chip person p-andrea"><span class="av">A</span>Andrea</span>
+          <span class="chip person on p-georgia"><span class="av">G</span>Georgia</span>
+          <span class="chip person on p-poppy"><span class="av">P</span>Poppy</span>
+          <span class="chip person p-fam"><span class="av">🏠</span>Anyone</span>
+        </div>
+        <div class="hint">Each person gets their own copy to tick off.</div>
+      </div>
+    </div>
+    <div class="row"><span>Repeats</span>
+      <div class="chips" style="align-items:center">
+        <span class="chip sel">Daily</span><span class="chip">Weekdays</span><span class="chip">Weekly</span><span class="chip">Custom</span>
+        <span class="days"><b class="on">M</b><b class="on">T</b><b class="on">W</b><b class="on">T</b><b class="on">F</b><b class="on">S</b><b class="on">S</b></span>
+      </div>
+    </div>
+    <div class="row"><span>Part of day</span>
+      <div class="chips"><span class="chip sel">☀️ Morning</span><span class="chip">🌤️ Afternoon</span><span class="chip sel">🌙 Evening</span></div>
+    </div>
+    <div class="row"><span>Stars</span>
+      <div class="stepper"><button>−</button><span class="s"><i data-i="star"></i></span>1<button>+</button><span class="hint" style="margin:0 0 0 8px">Kids only · counts toward rewards</span></div>
+    </div>
+    <div class="row" style="border-bottom:0"><span>Starts</span>
+      <div class="chips"><span class="chip">Today, Oct 12</span><span class="chip">No end date</span></div>
+    </div>
+    <div class="actions"><span class="hint" style="margin:0">Chores get an optional time instead of a part of day, and carry over when missed.</span><div class="grow"></div><button class="btn">Cancel</button><button class="btn dark">Save</button></div>
+  </div>
+</div></div>
+</body>
+</html>

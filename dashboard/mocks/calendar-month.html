@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calendar month · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<link rel="stylesheet" href="calendar.css">
+<script src="shell.js"></script>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .cal { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  .cal-filter { display: none; }
+  .month { grid-template-rows: 26px repeat(5, 74px); }
+  .mhead div { padding: 6px 0 0; text-align: center; font-size: 11px; }
+  .cell { padding: 4px 3px; flex-direction: row; flex-wrap: wrap; align-content: flex-start; gap: 3px; }
+  .cell .n { width: 100%; height: 22px; font-size: 13px; border-radius: 11px; }
+  .cell.today .n { width: 22px; margin: 0 auto 1px; }
+  .mev { font-size: 0; gap: 0; }
+  .mev.bar { width: 100%; height: 5px; padding: 0; border-radius: 3px; background: var(--c); }
+  .cell .more { display: none; }
+  .mday.phone-only { display: flex !important; flex-direction: column; gap: 6px; padding: 14px; }
+}
+</style>
+</head>
+<body data-view="calendar" data-title="October 2026">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="cal">
+        <div class="toolbar">
+          <div class="seg"><a href="calendar-day.html">Day</a><a href="calendar-week.html">Week</a><a class="on" href="calendar-month.html">Month</a></div>
+          <button class="btn icon"><i data-i="left"></i></button>
+          <button class="btn icon"><i data-i="right"></i></button>
+          <button class="btn">Today</button>
+          <span class="range">October 2026</span>
+          <div class="grow"></div>
+          <div class="cal-filter"><span class="pill p-fam"><i></i>Family calendar</span></div>
+          <a class="btn dark" href="add-event.html"><i data-i="plus"></i>Add event</a>
+        </div>
+        <div class="month" id="month"></div>
+        <div class="card phone-only mday"><div class="label">Monday, Oct 12</div>
+          <div class="ev allday p-poppy"><b>Pajama Day</b></div>
+          <div class="ev p-poppy"><small>3:45 PM</small><b>Piano lesson</b></div>
+          <div class="ev p-georgia"><small>4:30 PM</small><b>Soccer practice</b></div>
+          <div class="ev p-fam"><small>6:30 PM</small><b>Dinner with Grandma</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<script>
+  // Grid starts Monday 28 September 2026. Index 14 = Monday 12 October (today).
+  var special = {
+    3: [['bar', 'fam', 'Apple picking']],
+    4: [['bar', 'fam', 'Apple picking']],
+    13: [['bar', 'fam', 'Thanksgiving dinner']],
+    14: [['bar', 'poppy', 'Pajama Day']],
+    15: [['bar', 'boston', 'Boston in Montréal']], 16: [['bar', 'boston', 'Boston in Montréal']], 17: [['bar', 'boston', 'Boston in Montréal']],
+    19: [['bar', 'fam', 'Grandma visits']], 20: [['bar', 'fam', 'Grandma visits']],
+    24: [['bar', 'georgia', "Georgia's birthday 🎂"]],
+    27: [['', 'poppy', 'Dentist']],
+    31: [['', 'andrea', 'Halloween party']],
+    33: [['bar', 'fam', 'Halloween 🎃']]
+  };
+  var html = '<div class="mrow mhead">' + ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(function (d) { return '<div>' + d + '</div>'; }).join('') + '</div>';
+  for (var w = 0; w < 5; w++) {
+    html += '<div class="mrow">';
+    for (var d = 0; d < 7; d++) {
+      var i = w * 7 + d;
+      var date = new Date(2026, 8, 28 + i);
+      var out = date.getMonth() !== 9;
+      var list = (special[i] || []).slice();
+      if (d === 0) list.push(['', 'poppy', '3:45 Piano']);
+      if (d === 1 || d === 3) list.push(['', 'georgia', '4:30 Soccer']);
+      if (d === 2) list.push(['', 'andrea', '7:00 Yoga']);
+      if (d === 4 && w % 2 === 0) list.push(['', 'fam', '6:00 Pizza night']);
+      if (d === 5) list.push(['', 'poppy', '10:00 Swim']);
+      if (d === 6) list.push(['', 'fam', '10:30 Brunch']);
+      if (i % 4 === 1) list.push(['', 'boston', '12:00 Lunch meeting']);
+      if (i % 5 === 2) list.push(['', 'andrea', '9:00 Doctor']);
+      var shown = list.slice(0, 3);
+      html += '<div class="cell' + (out ? ' out' : '') + (i === 14 ? ' today' : '') + '"><div class="n">' + date.getDate() + '</div>' +
+        shown.map(function (e) { return '<div class="mev ' + e[0] + ' p-' + e[1] + '">' + e[2] + '</div>'; }).join('') +
+        (list.length > 3 ? '<div class="more">+' + (list.length - 3) + ' more</div>' : '') + '</div>';
+    }
+    html += '</div>';
+  }
+  document.getElementById('month').innerHTML = html;
+</script>
+</body>
+</html>

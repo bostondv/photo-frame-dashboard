@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recipe · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<script src="recipe-data.js"></script>
+<style>
+  .rec { display: grid; grid-template-columns: 330px 300px 1fr; gap: 18px; height: 100%; }
+  .hero { overflow: hidden; display: flex; flex-direction: column; }
+  .hero .art { height: 200px; display: grid; place-items: center; font-size: 96px; }
+  .hero .bd { padding: 16px 20px 18px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .hero h2 { font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1.05; }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tags span { font-size: 12px; font-weight: 700; color: var(--ink-2); background: var(--bg); padding: 4px 10px; border-radius: 999px; }
+  .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .meta div { background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line); border-radius: 12px; padding: 8px 10px; }
+  .meta small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  .meta b { font-size: 17px; }
+  .cookbtn { height: 60px; border-radius: 18px; background: var(--accent); color: #fff; font-size: 19px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: auto; }
+  .cookbtn svg { width: 22px; height: 22px; }
+  .src { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--mute); font-weight: 600; line-height: 1.35; }
+  .src b { color: var(--ink); display: block; font-size: 14px; }
+  .qr { width: 56px; height: 56px; flex: none; border-radius: 8px; background: #fff; box-shadow: inset 0 0 0 1.5px var(--line-2); padding: 5px; }
+
+  .card h3 { font-size: 20px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .ings { padding: 18px 18px 14px; display: flex; flex-direction: column; min-height: 0; }
+  .scale { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; }
+  .scale button { width: 30px; height: 30px; border-radius: 50%; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); display: grid; place-items: center; }
+  .scale button svg { width: 14px; height: 14px; }
+  .ing-row { display: grid; grid-template-columns: 26px 54px 1fr; gap: 8px; align-items: start; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+  .ing-row::before { content: ''; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line-2); margin-top: 1px; }
+  .ing-row.got::before { background: #1FA36E; border-color: #1FA36E; }
+  .ing-row.got b { color: var(--mute); text-decoration: line-through; }
+  .ing-row .qty { font-weight: 800; color: var(--ink-2); font-size: 14px; padding-top: 2px; }
+  .ing-row b { font-weight: 600; }
+  .ing-row small { display: block; font-size: 12px; color: var(--mute); font-weight: 600; }
+  .ing-head { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); padding: 10px 0 2px; }
+  .addg { margin-top: auto; padding-top: 10px; }
+  .addg .btn { width: 100%; justify-content: center; box-shadow: inset 0 0 0 1.5px var(--line-2); }
+
+  .steps { padding: 18px 22px; overflow: hidden; }
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 17px; line-height: 1.5; }
+  .step:last-child { border-bottom: 0; }
+  .step .n { width: 30px; height: 30px; border-radius: 50%; background: var(--bg); display: grid; place-items: center; font-weight: 800; font-size: 14px; }
+  mark { background: none; color: inherit; }
+  mark.ing { color: #136B48; font-weight: 700; background: #DCF3E8; padding: 0 4px; border-radius: 5px; }
+  mark.tm, mark.tmp { display: inline-flex; align-items: center; gap: 4px; color: #8A5700; font-weight: 800; background: #FFF0D2; padding: 0 7px; border-radius: 6px; }
+  mark.tm svg { width: 15px; height: 15px; }
+  .back { margin-right: 4px; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .rec { display: flex; flex-direction: column; gap: 14px; height: auto; }
+  .hero .art { height: 160px; font-size: 80px; }
+  .hero h2 { font-size: 28px; }
+  .src { display: none; }
+  .phone-only { display: flex !important; }
+  .cookbtn { margin-top: 4px; }
+  .topbar .pill { display: none; }
+}
+</style>
+</head>
+<body data-view="meals" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar" data-custom>
+      <a class="btn back" href="meals.html"><i data-i="left"></i>Meals</a>
+      <h1>Monday dinner</h1>
+      <div class="grow"></div>
+      <span class="pill" style="background:#FDE7E8;color:#B4232A;padding:8px 14px;font-size:14px">Tonight · 6:30 PM</span>
+      <a class="btn" href="edit-recipe.html"><i data-i="edit"></i>Edit</a>
+      <div class="clock-chip">3:20<span>PM</span></div>
+    </header>
+    <div class="content">
+      <div class="rec">
+        <section class="card hero">
+          <div class="art" id="art"></div>
+          <div class="bd">
+            <h2 id="title"></h2>
+            <div class="tags" id="tags"></div>
+            <div class="meta"><div><small>Prep</small><b id="prep"></b></div><div><small>Cook</small><b id="cook"></b></div><div><small>Serves</small><b id="srv"></b></div></div>
+            <div class="src"><svg class="qr" id="qr" viewBox="0 0 21 21"></svg><span><b>Open the original on your phone</b>Scan to view on <span id="site"></span></span></div>
+            <a class="btn phone-only" style="justify-content:center;box-shadow:inset 0 0 0 1.5px var(--line-2)"><i data-i="link"></i>Open original on familykitchen.example</a>
+            <a class="cookbtn" href="cook.html"><i data-i="play"></i>Start cooking</a>
+          </div>
+        </section>
+        <section class="card ings">
+          <h3>Ingredients <span class="scale"><button><i data-i="minus"></i></button>4 servings<button><i data-i="plus"></i></button></span></h3>
+          <div id="ings"></div>
+          <div class="addg"><a class="btn" href="add-groceries.html"><i data-i="cart"></i>Add to Groceries</a></div>
+        </section>
+        <section class="card steps">
+          <h3>Steps <span class="muted" style="font-size:14px;font-weight:600" id="cooked"></span></h3>
+          <div id="steps"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div></div>
+<script>
+  var R = window.RECIPE;
+  document.getElementById('art').style.background = R.art;
+  document.getElementById('art').textContent = R.emoji;
+  document.getElementById('title').textContent = R.title;
+  document.getElementById('tags').innerHTML = R.tags.map(function (t) { return '<span>' + t + '</span>'; }).join('');
+  document.getElementById('prep').textContent = R.prep + ' min';
+  document.getElementById('cook').textContent = R.cook + ' min';
+  document.getElementById('srv').textContent = R.servings;
+  document.getElementById('site').textContent = R.source;
+  document.getElementById('cooked').textContent = R.cooked;
+  document.getElementById('ings').innerHTML = R.ingredients.map(function (g, i) { return window.ingHTML(g, 'ing-row' + (i === 3 || i === 7 ? ' got' : '')); }).join('');
+  document.getElementById('steps').innerHTML = R.steps.map(function (s, i) { return '<div class="step"><span class="n">' + (i + 1) + '</span><span>' + window.stepHTML(s) + '</span></div>'; }).join('');
+  // Fake QR: finder squares plus a deterministic pattern.
+  var q = '';
+  function finder(x, y) { q += '<rect x="' + x + '" y="' + y + '" width="7" height="7" fill="#23211E"/><rect x="' + (x + 1) + '" y="' + (y + 1) + '" width="5" height="5" fill="#fff"/><rect x="' + (x + 2) + '" y="' + (y + 2) + '" width="3" height="3" fill="#23211E"/>'; }
+  finder(0, 0); finder(14, 0); finder(0, 14);
+  for (var y = 0; y < 21; y++) for (var x = 0; x < 21; x++) {
+    if ((x < 8 && y < 8) || (x > 12 && y < 8) || (x < 8 && y > 12)) continue;
+    if ((x * 7 + y * 13 + x * y) % 3 === 0) q += '<rect x="' + x + '" y="' + y + '" width="1" height="1" fill="#23211E"/>';
+  }
+  document.getElementById('qr').innerHTML = q;
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rewards · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .wrap { display: grid; grid-template-rows: 56px 1fr; gap: 14px; height: 100%; }
+  .toolbar { display: flex; align-items: center; gap: 10px; }
+  .toolbar .grow { flex: 1; }
+  .kids { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; min-height: 0; }
+  .kid { padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+  .kh { display: flex; align-items: center; gap: 16px; padding-bottom: 6px; }
+  .kh .who { flex: 1; }
+  .kh b { font-size: 24px; display: block; }
+  .kh small { font-size: 14px; color: var(--mute); font-weight: 600; }
+  .bal { text-align: right; }
+  .bal b { font-size: 40px; font-weight: 800; letter-spacing: -.02em; display: flex; align-items: center; gap: 6px; justify-content: flex-end; line-height: 1; }
+  .bal b svg { width: 32px; height: 32px; color: #F0A01A; }
+  .bal small { font-size: 13px; }
+  .week { display: flex; gap: 6px; padding: 4px 0 6px; }
+  .week div { flex: 1; text-align: center; font-size: 12px; font-weight: 700; color: var(--mute); }
+  .week i { display: block; height: 34px; border-radius: 10px; background: var(--line); margin-bottom: 4px; font-style: normal; font-size: 13px; font-weight: 800; color: var(--tx); display: grid; place-items: center; }
+  .week i.full { background: var(--soft); box-shadow: inset 0 0 0 2px var(--c); }
+  .week i.part { background: var(--soft); }
+  .rw { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: var(--r-m); background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line); }
+  .rw .em { width: 48px; height: 48px; border-radius: 14px; background: #fff; box-shadow: inset 0 0 0 1.5px var(--line); display: grid; place-items: center; font-size: 26px; flex: none; }
+  .rw .tx { flex: 1; min-width: 0; }
+  .rw .tx b { font-size: 17px; display: block; }
+  .rw .prog { height: 8px; border-radius: 99px; background: var(--line); margin-top: 7px; overflow: hidden; }
+  .rw .prog i { display: block; height: 100%; background: #F0A01A; border-radius: 99px; }
+  .rw .cost { font-size: 14px; font-weight: 800; color: #8A5700; white-space: nowrap; display: flex; align-items: center; gap: 3px; }
+  .rw .cost svg { width: 14px; height: 14px; color: #F0A01A; }
+  .rw .redeem { height: 42px; padding: 0 16px; border-radius: 999px; background: var(--c); color: #fff; font-weight: 800; font-size: 15px; }
+  .rw.ready { background: var(--soft); box-shadow: inset 0 0 0 2px var(--c); }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .wrap { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  .toolbar .muted { display: none; }
+  .kids { grid-template-columns: 1fr; }
+  .kid { padding: 16px; }
+  .bal b { font-size: 32px; }
+}
+</style>
+</head>
+<body data-view="chores" data-title="Rewards" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="wrap">
+        <div class="toolbar">
+          <a class="btn" href="chores.html"><i data-i="left"></i>Chores</a>
+          <div class="grow"></div>
+          <span class="muted" style="font-size:14px;font-weight:600">Anyone can add rewards or give bonus stars, here or on a phone</span>
+          <a class="btn dark"><i data-i="plus"></i>Add reward</a>
+        </div>
+        <div class="kids" id="kids"></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+<script>
+  var S = window.MockIcon;
+  var K = [
+    { id: 'georgia', name: 'Georgia', i: 'G', stars: 46, today: 6, week: [[1, 8], [1, 9], [0, 4], [1, 7], [1, 8], [0, 3], [2, 6]],
+      rewards: [['🍦', 'Ice cream after dinner', 30, 1], ['🎬', 'Pick the family movie', 60], ['📱', '30 min extra screen time', 40], ['🛼', 'Roller rink with a friend', 150]] },
+    { id: 'poppy', name: 'Poppy', i: 'P', stars: 57, today: 3, week: [[1, 7], [0, 3], [1, 6], [1, 7], [1, 7], [1, 5], [2, 3]],
+      rewards: [['🍦', 'Ice cream after dinner', 30, 1], ['🧸', 'Build-a-Bear trip', 200], ['🍕', 'Choose Friday dinner', 50, 1], ['🌙', 'Stay up 30 min late', 75]] }
+  ];
+  var D = ['Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Today'];
+  document.getElementById('kids').innerHTML = K.map(function (k) {
+    var h = '<section class="card kid p-' + k.id + '"><div class="kh"><div class="av lg">' + k.i + '</div><div class="who"><b>' + k.name + '</b><small>+' + k.today + ' stars today</small></div>' +
+      '<div class="bal"><b>' + S('star') + k.stars + '</b><small class="muted">stars to spend</small></div></div>';
+    h += '<div class="label" style="font-size:11px">Stars per day · outlined = everything done</div><div class="week">' + k.week.map(function (w, i) { return '<div><i class="' + (w[0] === 1 ? 'full' : w[0] === 2 ? 'part' : '') + '">' + w[1] + '</i>' + D[i] + '</div>'; }).join('') + '</div>';
+    h += k.rewards.map(function (r) {
+      var ready = k.stars >= r[2];
+      return '<div class="rw' + (ready ? ' ready' : '') + '"><div class="em">' + r[0] + '</div><div class="tx"><b>' + r[1] + '</b>' +
+        (ready ? '' : '<div class="prog"><i style="width:' + Math.round(k.stars / r[2] * 100) + '%"></i></div>') + '</div>' +
+        '<span class="cost">' + S('star') + r[2] + (r[3] ? ' · again' : '') + '</span>' + (ready ? '<button class="redeem">Redeem</button>' : '') + '</div>';
+    }).join('');
+    return h + '</section>';
+  }).join('');
+</script>
+</body>
+</html>

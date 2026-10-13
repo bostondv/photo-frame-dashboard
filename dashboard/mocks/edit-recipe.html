@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit recipe · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<link rel="stylesheet" href="recipe-form.css">
+<script src="shell.js"></script>
+<script src="recipe-data.js"></script>
+</head>
+<body data-view="book" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar" data-custom>
+      <a class="btn" href="recipe.html"><i data-i="x"></i>Cancel</a>
+      <h1>Edit recipe</h1>
+      <div class="grow"></div>
+      <button class="btn del" style="color:#B4232A">Delete</button>
+      <a class="btn dark" href="recipe.html"><i data-i="check"></i>Save</a>
+    </header>
+    <div class="content">
+      <div class="form">
+        <section class="card fcol">
+          <div class="photo"><div class="art" id="art"></div><div><b>Photo</b><span>Change photo · Pick an emoji</span></div></div>
+          <label class="f">Title<div class="in" id="title"></div></label>
+          <div class="three">
+            <label class="f">Serves<div class="in">4</div></label>
+            <label class="f">Prep<div class="in">10 min</div></label>
+            <label class="f">Cook<div class="in">25 min</div></label>
+          </div>
+          <label class="f">Source<div class="in muted">familykitchen.example/fajitas</div></label>
+          <label class="f">Tags<div class="chips"><span class="chip">Weeknight ✕</span><span class="chip">Mexican ✕</span><span class="chip">One pan ✕</span><span class="chip add">+ Tag</span></div></label>
+          <label class="f">Notes<div class="in area muted">Kids like it without the chili powder on their half.</div></label>
+        </section>
+        <section class="card fcol">
+          <h3>Ingredients <small>one per line · “# To serve” starts a group</small></h3>
+          <div class="lines" id="ings"></div>
+          <div class="hint">Each line is read into amount, unit and item, shown on the right, so servings can scale and groceries can combine.</div>
+        </section>
+        <section class="card fcol">
+          <h3>Steps</h3>
+          <div class="lines steps" id="steps"></div>
+          <div class="hint">Times like “20 minutes” become timers in cook mode automatically.</div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div></div>
+<script>
+  var R = window.RECIPE;
+  var a = document.getElementById('art'); a.style.background = R.art; a.textContent = R.emoji;
+  document.getElementById('title').textContent = R.title;
+  document.getElementById('ings').innerHTML = R.ingredients.map(function (g, i) {
+    if (g.head) return '<div class="ln head"># ' + g.head + '</div>';
+    var raw = [g.q, g.u, g.item].join(' ').replace(/\s+/g, ' ').trim() + (g.note ? ', ' + g.note : '');
+    return '<div class="ln' + (i === 2 ? ' focus' : '') + '"><span class="raw">' + raw + '</span>' +
+      (g.q ? '<span class="parsed"><b>' + [g.q, g.u].join(' ').trim() + '</b> ' + g.item + '</span>' : '<span class="parsed none">no amount</span>') + '</div>';
+  }).join('') + '<div class="ln ph">Add ingredient…</div>';
+  document.getElementById('steps').innerHTML = R.steps.map(function (s, i) {
+    return '<div class="ln"><span class="n">' + (i + 1) + '</span><span>' + s.replace(/\[\[|\]\]|\{\{|\}\}/g, '') + '</span></div>';
+  }).join('') + '<div class="ln ph"><span class="n">+</span>Add step…</div>';
+</script>
+</body>
+</html>

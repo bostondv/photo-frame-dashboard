@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop for the week · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<link rel="stylesheet" href="grocery-preview.css">
+<script src="shell.js"></script>
+<style>
+  .shop { display: grid; grid-template-columns: 340px 1fr; gap: 18px; height: 100%; }
+  .meals, .lines { padding: 18px 20px; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+  .meals h3, .lines h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .meals p { font-size: 13px; color: var(--mute); font-weight: 600; margin-bottom: 8px; }
+  .ml { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .ml .art { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 24px; flex: none; }
+  .ml .tx { flex: 1; min-width: 0; }
+  .ml b { display: block; font-size: 15px; }
+  .ml small { font-size: 12px; color: var(--mute); font-weight: 600; }
+  .ml.off { opacity: .45; }
+  .toggle { width: 44px; height: 26px; border-radius: 999px; background: var(--line-2); position: relative; flex: none; }
+  .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .toggle.on { background: #1FA36E; } .toggle.on::after { left: 21px; }
+  .cols { columns: 2; column-gap: 28px; }
+  .cols .gp, .cols .gp-sec { break-inside: avoid; }
+  .bar { display: flex; align-items: center; gap: 12px; margin-top: auto; padding-top: 12px; }
+  .bar .grow { flex: 1; }
+  .bar .btn { height: 54px; padding: 0 24px; font-size: 17px; }
+  .bar .muted { font-size: 13px; font-weight: 600; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .shop { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  .meals, .lines { overflow: visible; padding: 16px; }
+  .cols { columns: 1; }
+  .topbar .muted { display: none; }
+  .bar { flex-wrap: wrap; } .bar .grow { display: none; } .bar .btn { flex: 1; justify-content: center; }
+}
+</style>
+</head>
+<body data-view="meals" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar" data-custom>
+      <a class="btn" href="meals.html"><i data-i="left"></i>Meals</a>
+      <h1>Shop for the week</h1>
+      <div class="grow"></div>
+      <span class="muted" style="font-weight:600">Oct 12 – 18</span>
+    </header>
+    <div class="content">
+      <div class="shop">
+        <section class="card meals">
+          <h3>Meals</h3>
+          <p>Turn off anything you’re not cooking or already shopped for.</p>
+          <div class="ml"><span class="art" style="background:#FFE3C4">🌮</span><span class="tx"><b>Fajitas</b><small>Mon dinner · 4 servings</small></span><span class="toggle on"></span></div>
+          <div class="ml"><span class="art" style="background:#E0F2D8">🍝</span><span class="tx"><b>Rigatoni alla vodka</b><small>Tue dinner · 3 servings</small></span><span class="toggle on"></span></div>
+          <div class="ml"><span class="art" style="background:#FDE1E1">🍕</span><span class="tx"><b>Pizza night</b><small>Wed dinner · 4 servings</small></span><span class="toggle on"></span></div>
+          <div class="ml"><span class="art" style="background:#E3EBFE">🐟</span><span class="tx"><b>Miso-glazed salmon</b><small>Thu dinner · 4 servings</small></span><span class="toggle on"></span></div>
+          <div class="ml"><span class="art" style="background:#FDE1E1">🍚</span><span class="tx"><b>Gochujang tofu</b><small>Fri dinner · 4 servings</small></span><span class="toggle on"></span></div>
+          <div class="ml off"><span class="art" style="background:#EDE6FF">🍔</span><span class="tx"><b>Smash burgers</b><small>Sat dinner · Grandma bringing</small></span><span class="toggle"></span></div>
+          <div class="ml"><span class="art" style="background:#DDF1F0">🍲</span><span class="tx"><b>Slow-cooker chili</b><small>Sun dinner · 6 servings</small></span><span class="toggle on"></span></div>
+        </section>
+        <section class="card lines">
+          <h3>To buy</h3>
+          <div class="cols">
+            <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Onions<small>Fajitas, Rigatoni, Chili</small></span><span class="q">×3</span></div>
+            <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Chicken thighs<small>Fajitas</small></span><span class="q">1½ lb</span></div>
+            <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Bell peppers<small>Fajitas, Chili</small></span><span class="q">×4</span></div>
+            <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Salmon fillets<small>Salmon</small></span><span class="q">×4</span></div>
+            <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Extra-firm tofu<small>Gochujang tofu</small></span><span class="q">1 block</span></div>
+            <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Rigatoni<small>Rigatoni</small></span><span class="q">1 lb</span></div>
+            <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Ground beef<small>Chili</small></span><span class="q">2 lb</span></div>
+            <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Mozzarella<small>Pizza</small></span><span class="q">2 balls</span></div>
+            <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Gochujang<small>Gochujang tofu</small></span><span class="q">1 jar</span></div>
+            <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Fresh ginger<small>Salmon</small></span></div>
+            <div class="gp-sec">Already on the list</div>
+            <div class="gp"><span class="ck"></span><span class="tx">Limes<small>Fajitas, Salmon</small></span><span class="tag">On list</span></div>
+            <div class="gp"><span class="ck"></span><span class="tx">Heavy cream<small>Rigatoni</small></span><span class="tag">On list</span></div>
+            <div class="gp-sec">Probably in the pantry · 11</div>
+            <div class="gp off"><span class="ck"></span><span class="tx">Olive oil, soy sauce, cumin, chili powder, flour…</span></div>
+          </div>
+          <div class="bar"><span class="muted">Combined from 6 meals, scaled to each meal’s servings</span><div class="grow"></div><a class="btn dark" href="lists.html"><i data-i="cart"></i>Add 10 items to Groceries</a></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div></div>
+</body>
+</html>

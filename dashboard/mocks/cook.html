@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cook mode · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<script src="recipe-data.js"></script>
+<style>
+  .frame.bleed { display: grid; grid-template-columns: 1fr; grid-template-rows: 76px 1fr 110px; }
+  .top { display: flex; align-items: center; gap: 14px; padding: 0 28px; }
+  .top .x { width: 52px; height: 52px; border-radius: 50%; background: var(--surface); box-shadow: var(--shadow); display: grid; place-items: center; }
+  .top h1 { font-size: 22px; font-weight: 700; }
+  .top h1 small { display: block; font-size: 13px; color: var(--mute); font-weight: 600; }
+  .top .grow { flex: 1; }
+  .timer { display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 10px; border-radius: 999px; background: #FFF0D2; color: #8A5700; font-weight: 800; font-size: 20px; font-variant-numeric: tabular-nums; box-shadow: inset 0 0 0 2px #F5C76A; }
+  .timer i { width: 34px; height: 34px; border-radius: 50%; background: #F0A01A; color: #fff; display: grid; place-items: center; }
+  .timer i svg { width: 20px; height: 20px; }
+  .timer small { font-size: 13px; font-weight: 700; margin-right: 2px; }
+  .awake { font-size: 13px; color: var(--mute); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .awake .dot { width: 8px; height: 8px; border-radius: 50%; background: #1FA36E; }
+
+  .body { display: grid; grid-template-columns: 330px 1fr; gap: 20px; padding: 0 28px; min-height: 0; }
+  .side { padding: 18px 18px; overflow: hidden; }
+  .side h3 { font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); margin-bottom: 8px; }
+  .ci { display: grid; grid-template-columns: 58px 1fr; gap: 8px; padding: 6px 8px; border-radius: 10px; font-size: 15px; color: #B3ADA3; }
+  .ci .qty { font-weight: 800; }
+  .ci small { display: none; }
+  .ci.now { color: var(--ink); background: #DCF3E8; }
+  .ci.now .qty { color: #136B48; }
+  .ci.now b { color: #136B48; }
+  .ing-head { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #C9C3B9; padding: 8px 8px 2px; }
+
+  .stage { padding: 30px 44px; display: flex; flex-direction: column; }
+  .count { font-size: 15px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); display: flex; align-items: center; gap: 14px; }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 28px; height: 6px; border-radius: 3px; background: var(--line-2); }
+  .dots i.done { background: var(--ink-2); }
+  .dots i.on { background: #E5484D; }
+  .text { font-size: 42px; line-height: 1.32; font-weight: 600; margin-top: 26px; letter-spacing: -.01em; }
+  mark { background: none; color: inherit; }
+  mark.ing { color: #136B48; background: #DCF3E8; padding: 0 8px; border-radius: 10px; font-weight: 700; }
+  mark.tm { display: inline-flex; align-items: center; gap: 8px; color: #8A5700; background: #FFF0D2; padding: 0 12px; border-radius: 12px; font-weight: 800; box-shadow: inset 0 0 0 2px #F5C76A; }
+  mark.tm svg { width: 34px; height: 34px; }
+  .hint { margin-top: auto; font-size: 15px; color: var(--mute); font-weight: 600; display: flex; gap: 18px; }
+  .hint span { display: flex; align-items: center; gap: 6px; }
+  .hint svg { width: 16px; height: 16px; }
+  .next-up { font-size: 16px; color: var(--mute); font-weight: 600; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .next-up b { color: var(--ink-2); }
+
+  .cnav { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; padding: 14px 28px 26px; }
+  .cnav button { border-radius: 24px; font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .cnav button svg { width: 30px; height: 30px; }
+  .cnav .prev { background: var(--surface); box-shadow: var(--shadow); color: var(--ink-2); }
+  .cnav .next { background: var(--accent); color: #fff; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .frame.bleed { display: flex !important; flex-direction: column; }
+  .top { padding: 12px 14px; gap: 10px; flex: none; }
+  .top h1 { font-size: 16px; } .awake { display: none; }
+  .timer { font-size: 16px; padding: 6px 12px 6px 6px; } .timer small { display: none; }
+  .body { grid-template-columns: 1fr; gap: 10px; padding: 0 14px; flex: 1; min-height: 0; grid-template-rows: auto 1fr; }
+  .side { padding: 12px; }
+  .ci:not(.now), .ing-head, .side h3 { display: none; }
+  .ci { display: inline-grid; grid-template-columns: auto auto; margin: 0 4px 4px 0; padding: 4px 10px; font-size: 13px; }
+  .stage { padding: 20px 18px; }
+  .text { font-size: 28px; margin-top: 14px; }
+  mark.tm svg { width: 24px; height: 24px; }
+  .hint { display: none; }
+  .cnav { padding: 12px 14px 18px; height: 92px; flex: none; }
+  .cnav button { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="frame bleed">
+  <div class="top">
+    <a class="x" href="recipe.html"><i data-i="x"></i></a>
+    <h1 id="title"><small>Cooking · 4 servings</small></h1>
+    <div class="grow"></div>
+    <span class="awake"><span class="dot"></span>Screen stays on</span>
+    <div class="timer"><i><i data-i="timer"></i></i><small>Roast</small>14:32</div>
+  </div>
+  <div class="body">
+    <section class="card side"><h3>Ingredients</h3><div id="ings"></div></section>
+    <section class="card stage">
+      <div class="count">Step 3 of 6 <span class="dots"><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i></span></div>
+      <div class="text" id="text"></div>
+      <div class="next-up"><b>Next:</b> Switch to broil for 3 minutes to char the edges…</div>
+      <div class="hint"><span><i data-i="timer"></i>Tap a time to start a timer</span><span>Swipe or tap Next — no need to touch the text</span></div>
+    </section>
+  </div>
+  <div class="cnav">
+    <button class="prev"><i data-i="left"></i>Back</button>
+    <button class="next">Next step<i data-i="right"></i></button>
+  </div>
+</div></div>
+<script>
+  var R = window.RECIPE;
+  document.getElementById('title').insertAdjacentText('afterbegin', R.title);
+  // Only the ingredients this step uses are highlighted.
+  var now = [0, 1, 2];
+  document.getElementById('ings').innerHTML = R.ingredients.map(function (g, i) {
+    return window.ingHTML(g, 'ci' + (now.indexOf(i) >= 0 ? ' now' : ''));
+  }).join('');
+  document.getElementById('text').innerHTML = window.stepHTML('Spread the [[chicken and vegetables]] in a single layer. Roast for {{20 minutes}}, stirring halfway.');
+</script>
+</body>
+</html>

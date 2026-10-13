@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add to Groceries · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<link rel="stylesheet" href="grocery-preview.css">
+<script src="shell.js"></script>
+<style>
+  .msheet { width: 640px; max-height: 740px; overflow-y: auto; }
+  .sub { font-size: 14px; color: var(--mute); font-weight: 600; margin: -6px 0 6px; line-height: 1.4; }
+  .serv { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; padding: 8px 0; }
+  .serv i { width: 32px; height: 32px; border-radius: 50%; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); display: grid; place-items: center; font-style: normal; }
+  .foot { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+  .foot .btn { height: 54px; padding: 0 24px; font-size: 17px; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .msheet { max-height: 92%; }
+  .foot .btn { flex: 1; justify-content: center; }
+}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="frame bleed">
+  <iframe class="under" src="recipe.html" tabindex="-1" aria-hidden="true"></iframe>
+  <div class="scrim"></div>
+  <div class="msheet" role="dialog" aria-label="Add to Groceries">
+    <header><h2>Add to Groceries</h2><a class="btn icon" href="recipe.html"><i data-i="x"></i></a></header>
+    <div class="sub">Sheet-pan chicken fajitas. Untick what you already have. Items go to the Groceries list in Google Tasks.</div>
+    <div class="serv">Servings <i>−</i>4<i>+</i></div>
+    <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Chicken thighs</span><span class="q">1½ lb</span></div>
+    <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Bell peppers</span><span class="q">×3</span></div>
+    <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Red onion</span><span class="q">×1</span></div>
+    <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Small flour tortillas</span><span class="q">×8</span></div>
+    <div class="gp on"><span class="ck"><i data-i="check"></i></span><span class="tx">Sour cream</span></div>
+    <div class="gp"><span class="ck"></span><span class="tx">Limes<small>Already on the list (×3)</small></span><span class="tag">On list</span></div>
+    <div class="gp-sec">Probably in the pantry</div>
+    <div class="gp off"><span class="ck"></span><span class="tx">Olive oil, chili powder, cumin, smoked paprika, salt</span></div>
+    <div class="foot"><a class="btn" href="recipe.html">Cancel</a><a class="btn dark" href="lists.html"><i data-i="cart"></i>Add 5 items</a></div>
+  </div>
+</div></div>
+</body>
+</html>

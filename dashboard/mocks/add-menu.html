@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add menu · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .pop { position: absolute; left: 112px; bottom: 96px; width: 470px; background: var(--surface); border-radius: 26px; box-shadow: var(--shadow-lg); padding: 18px; }
+  .pop h2 { font-size: 15px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); padding: 2px 6px 12px; }
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tile { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 18px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line); text-decoration: none; color: inherit; }
+  .tile .ic { width: 50px; height: 50px; border-radius: 15px; display: grid; place-items: center; font-size: 26px; flex: none; }
+  .tile b { font-size: 17px; display: block; }
+  .tile small { font-size: 12px; color: var(--mute); font-weight: 600; }
+  .tile.off { opacity: .45; }
+  .ctx { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--bg); font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .close { position: absolute; width: 72px; height: 72px; border-radius: 22px; background: #fff; color: var(--ink); display: grid; place-items: center; box-shadow: var(--shadow-lg); }
+  .close svg { width: 30px; height: 30px; }
+  .tail { position: absolute; width: 18px; height: 18px; background: var(--surface); transform: rotate(45deg); left: 104px; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .pop { left: 0; right: 0; bottom: 74px; width: auto; border-radius: 26px 26px 0 0; padding: 16px 14px; }
+  .close, .tail { display: none; }
+  .tile { padding: 10px; gap: 8px; } .tile .ic { width: 40px; height: 40px; font-size: 21px; }
+  .tile b { font-size: 14px; } .tile small { font-size: 11px; }
+  .ctx { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="frame bleed">
+  <iframe class="under" id="under" src="home.html" tabindex="-1" aria-hidden="true"></iframe>
+  <div class="scrim"></div>
+  <span class="tail" id="tail"></span>
+  <div class="pop" id="pop">
+    <h2>Add</h2>
+    <div class="tiles">
+      <a class="tile" href="add-event.html"><span class="ic" style="background:#E2EAFE">📅</span><span><b>Event</b><small>To the family calendar</small></span></a>
+      <a class="tile" href="add-chore.html"><span class="ic" style="background:#DCF3E8">✅</span><span><b>Chore or routine</b><small>For someone, or anyone</small></span></a>
+      <a class="tile" href="lists.html"><span class="ic" style="background:#FFF0D2">🛒</span><span><b>List item</b><small>Groceries or any list</small></span></a>
+      <a class="tile" href="plan-meal.html"><span class="ic" style="background:#FCE4EF">🍽️</span><span><b>Plan a meal</b><small>Pick a day and a recipe</small></span></a>
+      <a class="tile" href="add-recipe.html"><span class="ic" style="background:#EEE9FF">📖</span><span><b>Recipe</b><small>Link, caption, photo, typed</small></span></a>
+      <a class="tile" href="upload-photos.html"><span class="ic" style="background:#E0F2D8">📷</span><span><b>Photos</b><small>Upload to an album</small></span></a>
+    </div>
+    <div class="ctx">Opens pre-filled from where you are: on Calendar it uses the day on screen, on Lists the open list.</div>
+  </div>
+  <a class="close" id="close" href="home.html" aria-label="Close"><i data-i="x"></i></a>
+</div></div>
+<script>
+  // Put the close button exactly over the rail's Add button in the screen underneath.
+  document.getElementById('under').addEventListener('load', function () {
+    if (window.MockPhone && window.MockPhone.matches) return;
+    var b = this.contentDocument.querySelector('.add-btn');
+    if (!b) return;
+    var r = b.getBoundingClientRect(), c = document.getElementById('close');
+    c.style.left = r.left + 'px'; c.style.top = r.top + 'px';
+    var t = document.getElementById('tail');
+    t.style.top = (r.top + r.height / 2 - 9) + 'px';
+    document.getElementById('pop').style.bottom = Math.max(16, 800 - r.bottom - 10) + 'px';
+  });
+</script>
+</body>
+</html>

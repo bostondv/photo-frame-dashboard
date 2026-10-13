@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weather · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .wx { display: grid; grid-template-columns: 420px 1fr; grid-template-rows: 1fr auto; gap: 20px; height: 100%; }
+  .now { grid-row: span 2; padding: 28px; display: flex; flex-direction: column; background: linear-gradient(170deg, #E6EEFF 0%, #FFFFFF 60%); }
+  .now .where { font-size: 16px; font-weight: 700; color: var(--mute); display: flex; gap: 6px; align-items: center; }
+  .now .big { display: flex; align-items: center; gap: 10px; margin: 18px 0 4px; }
+  .now .big svg { width: 120px; height: 120px; }
+  .now .big b { font-size: 112px; font-weight: 700; letter-spacing: -.05em; line-height: 1; }
+  .now .cond { font-size: 26px; font-weight: 700; }
+  .now .hl { font-size: 18px; color: var(--mute); font-weight: 600; margin-top: 4px; }
+  .now .say { margin-top: 22px; padding: 16px 18px; border-radius: var(--r-m); background: #fff; box-shadow: var(--shadow); font-size: 17px; line-height: 1.45; color: var(--ink-2); }
+  .now .say b { color: var(--ink); }
+  .stats { margin-top: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .stat { background: #fff; border-radius: var(--r-m); padding: 12px 14px; box-shadow: var(--shadow); }
+  .stat small { font-size: 12px; font-weight: 700; color: var(--mute); text-transform: uppercase; letter-spacing: .06em; display: flex; gap: 5px; align-items: center; }
+  .stat small svg { width: 14px; height: 14px; }
+  .stat b { font-size: 22px; display: block; margin-top: 2px; }
+
+  .hourly { padding: 22px 24px 18px; display: flex; flex-direction: column; }
+  .hourly h2, .daily h2 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .chart { position: relative; flex: 1; }
+  .hrs { display: grid; grid-template-columns: repeat(12, 1fr); text-align: center; position: relative; height: 100%; }
+  .hrs > div { display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--mute); }
+  .hrs svg { width: 34px; height: 34px; }
+  .hrs b { color: var(--ink); font-size: 18px; }
+  .hrs .pop { font-size: 12px; color: #3D74F2; font-weight: 800; height: 14px; }
+  .hrs .now-h { color: var(--ink); }
+  .bw { margin-top: auto; height: 96px; display: flex; align-items: flex-end; }
+  .bar { width: 22px; border-radius: 6px 6px 3px 3px; background: #D6E2FD; }
+  .bar.hi { background: #3D74F2; }
+
+  .daily { padding: 20px 24px 14px; }
+  .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+  .d { text-align: center; padding: 10px 4px; border-radius: var(--r-m); font-weight: 700; font-size: 15px; }
+  .d.today { background: var(--bg); }
+  .d svg { width: 38px; height: 38px; margin: 6px auto; display: block; }
+  .d .t { font-size: 17px; } .d .t span { color: var(--mute); font-weight: 600; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .wx { display: flex; flex-direction: column; gap: 14px; height: auto; }
+  .now { padding: 20px; }
+  .now .big svg { width: 84px; height: 84px; } .now .big b { font-size: 80px; }
+  .stats { margin-top: 16px; }
+  .chart { overflow-x: auto; }
+  .hrs { min-width: 640px; height: 250px; }
+  .days { grid-template-columns: repeat(7, 1fr); gap: 2px; }
+  .d { font-size: 12px; padding: 8px 0; } .d svg { width: 28px; height: 28px; } .d .t { font-size: 13px; }
+}
+</style>
+</head>
+<body data-view="" data-title="Weather" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="wx">
+        <section class="card now">
+          <div class="where"><i data-i="pin"></i>Toronto · Open-Meteo</div>
+          <div class="big"><i data-i="partly"></i><b>14°</b></div>
+          <div class="cond">Partly cloudy</div>
+          <div class="hl">High 17° · Low 8° · Feels like 12°</div>
+          <div class="say"><b>Rain from 4 PM</b> through the evening. Soccer at 4:30 will be wet — jackets and a towel for the car.</div>
+          <div class="stats">
+            <div class="stat"><small><i data-i="drop"></i>Rain</small><b>80%</b></div>
+            <div class="stat"><small><i data-i="wind"></i>Wind</small><b>18 km/h</b></div>
+            <div class="stat"><small>☀ UV</small><b>2 Low</b></div>
+          </div>
+        </section>
+        <section class="card hourly">
+          <h2 style="display:flex;justify-content:space-between">Next 12 hours<span class="muted" style="font-size:14px;font-weight:600">Bars: chance of rain</span></h2>
+          <div class="chart"><div class="hrs" id="hrs"></div></div>
+        </section>
+        <section class="card daily">
+          <h2>This week</h2>
+          <div class="days" id="days"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div></div>
+<script>
+  var H = [['Now', 'partly', 14, 10], ['4 PM', 'rain', 15, 80], ['5 PM', 'rain', 14, 90], ['6 PM', 'rain', 13, 70], ['7 PM', 'cloud', 12, 55], ['8 PM', 'cloud', 12, 20],
+           ['9 PM', 'night', 11, 10], ['10 PM', 'night', 10, 0], ['11 PM', 'night', 10, 0], ['12 AM', 'night', 9, 0], ['1 AM', 'night', 9, 0], ['2 AM', 'night', 8, 0]];
+  document.getElementById('hrs').innerHTML = H.map(function (h, i) {
+    return '<div class="' + (i === 0 ? 'now-h' : '') + '"><span>' + h[0] + '</span>' + MockIcon(h[1]) + '<b>' + h[2] + '°</b>' +
+      '<div class="bw"><div class="bar' + (h[3] >= 60 ? ' hi' : '') + '" style="height:' + Math.max(4, h[3] * .9) + 'px"></div></div><span class="pop">' + (h[3] >= 20 ? h[3] + '%' : '') + '</span></div>';
+  }).join('');
+  var D = [['Today', 'rain', 17, 8], ['Tue', 'cloud', 15, 7], ['Wed', 'sun', 18, 9], ['Thu', 'sun', 19, 10], ['Fri', 'partly', 16, 9], ['Sat', 'rain', 13, 6], ['Sun', 'partly', 14, 5]];
+  document.getElementById('days').innerHTML = D.map(function (d, i) {
+    return '<div class="d' + (i === 0 ? ' today' : '') + '">' + d[0] + MockIcon(d[1]) + '<div class="t">' + d[2] + '° <span>' + d[3] + '°</span></div></div>';
+  }).join('');
+</script>
+</body>
+</html>

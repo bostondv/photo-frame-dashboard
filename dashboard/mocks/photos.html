@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photos · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .wrap { display: grid; grid-template-rows: 56px 1fr; gap: 14px; height: 100%; }
+  .toolbar { display: flex; align-items: center; gap: 10px; }
+  .toolbar .grow { flex: 1; }
+  .chip { height: 44px; padding: 0 18px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; background: var(--surface); box-shadow: var(--shadow); color: var(--ink-2); }
+  .chip.on { background: var(--accent); color: #fff; }
+  .chip small { font-weight: 600; opacity: .7; }
+  .grid { display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 1fr; gap: 10px; min-height: 0; }
+  .ph { border-radius: var(--r-m); background: #DDD8CE center/cover no-repeat; position: relative; overflow: hidden; }
+  .ph.big { grid-column: span 3; grid-row: span 2; }
+  .ph.tall { grid-row: span 2; }
+  .ph.wide { grid-column: span 2; }
+  .ph .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 16px 14px; color: #fff; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55)); }
+  .ph .cap b { font-family: var(--display); font-weight: 400; font-size: 26px; display: block; }
+  .ph .cap small { font-size: 13px; font-weight: 600; opacity: .9; }
+  .ph .tag { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,.92); color: var(--ink); font-size: 12px; font-weight: 800; padding: 5px 10px; border-radius: 999px; letter-spacing: .04em; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .wrap { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  .chip { height: 40px; font-size: 14px; }
+  .grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 130px; gap: 8px; grid-auto-flow: dense; }
+  .ph.big { grid-column: span 2; grid-row: span 2; }
+  .ph.wide { grid-column: span 2; }
+}
+</style>
+</head>
+<body data-view="photos" data-title="Photos" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="wrap">
+        <div class="toolbar">
+          <span class="chip on">All photos <small>1,284</small></span>
+          <span class="chip">♥ Favourites</span>
+          <span class="chip">Tofino 2021</span>
+          <span class="chip">Summer at the lake</span>
+          <span class="chip">School year</span>
+          <div class="grow"></div>
+          <a class="btn" href="upload-photos.html"><i data-i="plus"></i>Add photos</a>
+          <a class="btn dark" href="screensaver.html"><i data-i="play"></i>Slideshow</a>
+        </div>
+        <div class="grid">
+          <div class="ph big" style="background-image:url(https://picsum.photos/seed/tofino-surf/900/700)"><span class="tag">ON THIS DAY</span><div class="cap"><b>Tofino, BC</b><small>October 12, 2021 · added by Andrea</small></div></div>
+          <div class="ph tall" style="background-image:url(https://picsum.photos/seed/kite-day/300/600)"></div>
+          <div class="ph wide" style="background-image:url(https://picsum.photos/seed/cottage-dock/600/300)"></div>
+          <div class="ph" style="background-image:url(https://picsum.photos/seed/autumn-walk/300/300)"></div>
+          <div class="ph" style="background-image:url(https://picsum.photos/seed/pumpkin-patch/300/300)"></div>
+          <div class="ph wide" style="background-image:url(https://picsum.photos/seed/road-trip/600/300)"></div>
+          <div class="ph" style="background-image:url(https://picsum.photos/seed/snow-day/300/300)"></div>
+          <div class="ph wide" style="background-image:url(https://picsum.photos/seed/beach-dunes/600/300)"></div>
+          <div class="ph" style="background-image:url(https://picsum.photos/seed/garden-bloom/300/300)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+</body>
+</html>

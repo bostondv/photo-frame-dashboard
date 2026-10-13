@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calendar day · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<link rel="stylesheet" href="calendar.css">
+<script src="shell.js"></script>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .cal { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  .cal-filter { display: none; }
+  .dayview { height: 760px; overflow-x: auto; }
+  .cols, .grid { min-width: 700px; }
+}
+</style>
+</head>
+<body data-view="calendar" data-title="Monday, October 12">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="cal">
+        <div class="toolbar">
+          <div class="seg"><a class="on" href="calendar-day.html">Day</a><a href="calendar-week.html">Week</a><a href="calendar-month.html">Month</a></div>
+          <button class="btn icon"><i data-i="left"></i></button>
+          <button class="btn icon"><i data-i="right"></i></button>
+          <button class="btn">Today</button>
+          <span class="range">Today</span>
+          <div class="grow"></div>
+          <div class="cal-filter"><span class="pill p-fam"><i></i>Family calendar</span></div>
+          <a class="btn dark" href="add-event.html"><i data-i="plus"></i>Add event</a>
+        </div>
+        <div class="dayview">
+          <div class="cols">
+            <div></div>
+            <div class="colhead p-boston"><div class="av sm">B</div>Boston</div>
+            <div class="colhead p-andrea"><div class="av sm">A</div>Andrea</div>
+            <div class="colhead p-georgia"><div class="av sm">G</div>Georgia</div>
+            <div class="colhead p-poppy"><div class="av sm">P</div>Poppy</div>
+            <div class="colhead p-fam"><div class="av sm">F</div>Family</div>
+          </div>
+          <div class="cols">
+            <div></div>
+            <div class="alld"></div>
+            <div class="alld"></div>
+            <div class="alld"></div>
+            <div class="alld"><div class="ev allday p-poppy"><b>Pajama Day</b></div></div>
+            <div class="alld"><div class="ev allday p-fam"><b>Garbage night</b></div></div>
+          </div>
+          <div class="grid" id="grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<script>
+  var START = 7, END = 21;
+  // [lane, person, title, start hour, end hour, place]
+  var E = [
+    [0, 'boston', 'School drop-off', 8.25, 8.67, 'Parkdale Elementary'],
+    [0, 'boston', 'Lunch with Priya', 12.5, 13.5, 'Café Rustica'],
+    [0, 'boston', 'Parent–teacher call', 17, 17.5, 'Zoom'],
+    [1, 'andrea', 'Gym', 7, 7.75, 'Iron Works'],
+    [1, 'andrea', 'Design review', 9.5, 10.5, 'Office · 4B'],
+    [1, 'andrea', 'Dentist w/ Georgia', 12, 12.75, ''],
+    [1, 'andrea', 'Drive Georgia to soccer', 16.1, 16.5, ''],
+    [1, 'andrea', 'Parent–teacher call', 17, 17.5, 'Zoom'],
+    [2, 'georgia', 'Dentist', 12, 12.75, 'Bright Smiles Dental'],
+    [2, 'georgia', 'Soccer practice', 16.5, 18, 'Lakeshore Fields'],
+    [3, 'poppy', 'Piano lesson', 15.75, 16.5, "Ms. Park's Studio"],
+    [3, 'poppy', 'Bath + books', 20, 20.5, ''],
+    [4, 'fam', 'Dinner with Grandma', 18.5, 19.5, 'Home']
+  ];
+  var grid = document.getElementById('grid');
+  var h = grid.offsetHeight;
+  var px = h / (END - START);
+  var html = '';
+  for (var t = START + 1; t < END; t++) {
+    var lbl = (t > 12 ? t - 12 : t) + (t >= 12 ? ' PM' : ' AM');
+    html += '<div class="hr" style="top:' + (t - START) * px + 'px"><span>' + lbl + '</span></div>';
+  }
+  var lanes = ['', '', '', '', ''];
+  E.forEach(function (e) {
+    var past = e[4] <= 15.33;
+    lanes[e[0]] += '<div class="ev p-' + e[1] + (past ? ' past' : '') + '" style="top:' + ((e[3] - START) * px + 1) + 'px;height:' + Math.max(26, (e[4] - e[3]) * px - 3) + 'px"><b>' + e[2] + '</b>' +
+      ((e[4] - e[3]) * px > 44 && e[5] ? '<small>' + e[5] + '</small>' : '') + '</div>';
+  });
+  // lanes start after the 64px time gutter; each is (width - 64) / 5
+  lanes.forEach(function (l, i) {
+    html += '<div class="lane" style="left:calc(64px + (100% - 64px) * ' + i / 5 + ');width:calc((100% - 64px) / 5)">' + l + '</div>';
+  });
+  html += '<div class="nowline" style="top:' + (15.33 - START) * px + 'px"></div>';
+  grid.innerHTML = html;
+</script>
+</body>
+</html>

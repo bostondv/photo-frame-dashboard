@@ -1,0 +1,11 @@
+/* The grocery preview list shared by add-groceries.html and shop-week.html. */
+.gp-sec { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); padding: 12px 2px 4px; }
+.gp { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 15px; font-weight: 600; }
+.gp .ck { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--line-2); flex: none; display: grid; place-items: center; color: #fff; }
+.gp .ck svg { width: 16px; height: 16px; }
+.gp.on .ck { background: #1FA36E; border-color: #1FA36E; }
+.gp .tx { flex: 1; min-width: 0; }
+.gp small { display: block; font-size: 12px; color: var(--mute); font-weight: 600; }
+.gp .q { font-size: 13px; color: var(--ink-2); font-weight: 800; white-space: nowrap; }
+.gp.off { color: var(--mute); }
+.gp .tag { font-size: 11px; font-weight: 800; color: #4B33B5; background: #EEE9FF; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }

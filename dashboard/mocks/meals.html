@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meals · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .wrap { display: grid; grid-template-rows: 56px 1fr; gap: 14px; height: 100%; }
+  .toolbar { display: flex; align-items: center; gap: 12px; }
+  .toolbar .grow { flex: 1; }
+  .src { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--mute); background: var(--surface); padding: 10px 16px; border-radius: 999px; box-shadow: var(--shadow); }
+  .src b { color: var(--ink); }
+  .plan { display: grid; grid-template-columns: 96px repeat(7, 1fr); grid-template-rows: 54px 1.7fr 1fr 1fr; gap: 10px; min-height: 0; }
+  .rowh { display: flex; flex-direction: column; justify-content: center; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+  .rowh span { font-size: 22px; }
+  .dh { display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: var(--r-m); }
+  .dh span { font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  .dh b { font-size: 20px; }
+  .dh.today { background: #E5484D; color: #fff; }
+  .dh.today span { color: rgba(255,255,255,.85); }
+
+  .dinner { background: var(--surface); border-radius: var(--r-l); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+  .dinner .art { flex: 1; display: grid; place-items: center; font-size: 54px; }
+  .dinner .tx { padding: 10px 12px 12px; }
+  .dinner b { font-size: 15px; line-height: 1.2; display: block; }
+  .dinner small { font-size: 12px; color: var(--mute); font-weight: 600; }
+  .dinner.tonight { box-shadow: 0 0 0 3px #E5484D, var(--shadow); }
+  .dinner.empty { background: transparent; box-shadow: inset 0 0 0 2px var(--line-2); box-shadow: none; border: 2px dashed var(--line-2); align-items: center; justify-content: center; color: var(--mute); font-weight: 700; font-size: 14px; text-align: center; padding: 12px; }
+  .dinner.past { opacity: .55; }
+  .slot { background: var(--surface); border-radius: var(--r-m); box-shadow: var(--shadow); padding: 10px 12px; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+  .slot b { font-size: 14px; line-height: 1.2; }
+  .slot small { font-size: 12px; color: var(--mute); font-weight: 600; }
+  .slot .e { font-size: 20px; }
+  .slot.past { opacity: .55; }
+  .slot.none { background: transparent; box-shadow: none; border: 2px dashed var(--line-2); color: var(--mute); font-size: 13px; font-weight: 600; align-items: center; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .wrap { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  /* transpose the week: days run down the page, meals across */
+  .plan { grid-template-columns: 50px 1.5fr 1fr 1fr; grid-template-rows: 28px repeat(7, 104px); grid-auto-flow: column; gap: 6px; }
+  .rowh { flex-direction: row; align-items: center; gap: 4px; font-size: 10px; letter-spacing: .04em; }
+  .rowh span { font-size: 14px; }
+  .dh { flex-direction: column; gap: 0; }
+  .dh b { font-size: 18px; }
+  .dinner .art { font-size: 30px; }
+  .dinner .tx { padding: 6px 8px 8px; }
+  .dinner b { font-size: 13px; }
+  .dinner small { display: none; }
+  .dinner .label { display: none; }
+  .slot { padding: 6px 7px; }
+  .slot b { font-size: 12px; }
+  .slot .e { font-size: 17px; }
+}
+</style>
+</head>
+<body data-view="meals" data-title="Meals" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="wrap">
+        <div class="toolbar">
+          <button class="btn icon"><i data-i="left"></i></button>
+          <button class="btn icon"><i data-i="right"></i></button>
+          <button class="btn">This week</button>
+          <span style="font-size:20px;font-weight:700;margin-left:6px">Oct 12 – 18</span>
+          <div class="grow"></div>
+          <a class="btn" href="recipes.html"><i data-i="book"></i>Recipes</a>
+          <a class="btn dark" href="shop-week.html"><i data-i="cart"></i>Shop for the week</a>
+        </div>
+        <div class="plan" id="plan"></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<script>
+  var days = [['Mon', 12], ['Tue', 13], ['Wed', 14], ['Thu', 15], ['Fri', 16], ['Sat', 17], ['Sun', 18]];
+  var bg = ['#FFE3C4', '#E0F2D8', '#FDE1E1', '#E3EBFE', '#FFF0C9', '#EDE6FF', '#DDF1F0'];
+  var dinner = [
+    ['🌮', 'Sheet-pan chicken fajitas', '35 min'], ['🍝', 'Rigatoni alla vodka', '30 min'], ['🍕', 'Pizza night', 'Homemade dough'],
+    ['🐟', 'Miso-glazed salmon & rice', '25 min'], null, ['🍔', 'Smash burgers', 'Grandma’s here'], ['🍲', 'Slow-cooker chili', 'Big batch · leftovers Mon']
+  ];
+  var breakfast = [['🥣', 'Overnight oats'], ['🥞', 'Waffles'], ['🍳', 'Eggs & toast'], ['🥣', 'Overnight oats'], ['🍌', 'Smoothies'], ['🥞', 'Pancakes'], ['🥯', 'Bagels & lox']];
+  var lunch = [['🥪', 'Turkey wraps'], ['🍝', 'Leftover pasta'], null, ['🥗', 'Chicken salad'], ['🌯', 'Burritos'], ['🧀', 'Grilled cheese'], ['🍜', 'Ramen']];
+  var h = '<div></div>' + days.map(function (d, i) { return '<div class="dh' + (i === 0 ? ' today' : '') + '"><span>' + d[0] + '</span><b>' + d[1] + '</b></div>'; }).join('');
+  h += '<div class="rowh"><span>🍽️</span>Dinner</div>';
+  dinner.forEach(function (m, i) {
+    if (!m) { h += '<a href="plan-meal.html" class="dinner empty"><span style="font-size:28px;line-height:1">＋</span>Add dinner</a>'; return; }
+    h += '<a href="recipe.html" class="dinner' + (i === 0 ? ' tonight' : '') + '"><div class="art" style="background:' + bg[i] + '">' + m[0] + '</div><div class="tx">' +
+      (i === 0 ? '<div class="label" style="color:#E5484D;font-size:11px">Tonight</div>' : '') + '<b>' + m[1] + '</b><small>' + m[2] + '</small></div></a>';
+  });
+  h += '<div class="rowh"><span>☀️</span>Breakfast</div>';
+  breakfast.forEach(function (m, i) { h += '<div class="slot' + (i === 0 ? ' past' : '') + '"><span class="e">' + m[0] + '</span><b>' + m[1] + '</b></div>'; });
+  h += '<div class="rowh"><span>🥪</span>Lunch</div>';
+  lunch.forEach(function (m, i) { h += m ? '<div class="slot' + (i === 0 ? ' past' : '') + '"><span class="e">' + m[0] + '</span><b>' + m[1] + '</b></div>' : '<a href="plan-meal.html" class="slot none">＋ Add</a>'; });
+  document.getElementById('plan').innerHTML = h;
+</script>
+</body>
+</html>

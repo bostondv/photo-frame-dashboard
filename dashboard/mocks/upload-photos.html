@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add photos · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .up { display: grid; grid-template-columns: 1fr 340px; gap: 18px; height: 100%; }
+  .pick { padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow: hidden; }
+  .pick h3, .opts h3 { font-size: 18px; font-weight: 700; display: flex; align-items: baseline; gap: 8px; }
+  .pick h3 small { font-size: 13px; color: var(--mute); font-weight: 600; margin-left: auto; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .th { aspect-ratio: 1; border-radius: 12px; background: #DDD8CE center/cover no-repeat; position: relative; overflow: hidden; }
+  .th .pr { position: absolute; left: 8px; right: 8px; bottom: 8px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.55); overflow: hidden; }
+  .th .pr i { display: block; height: 100%; background: #fff; }
+  .th .ok { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: #1FA36E; color: #fff; display: grid; place-items: center; }
+  .th .ok svg { width: 13px; height: 13px; }
+  .th.dup::after { content: 'Already added'; position: absolute; inset: 0; background: rgba(28,26,22,.55); color: #fff; font-size: 11px; font-weight: 800; display: grid; place-items: center; }
+  .drop { aspect-ratio: 1; border-radius: 12px; border: 2px dashed var(--line-2); display: grid; place-items: center; text-align: center; font-size: 12px; font-weight: 700; color: var(--mute); }
+  .drop svg { width: 26px; height: 26px; display: block; margin: 0 auto 4px; }
+  .note { font-size: 12px; color: var(--mute); font-weight: 600; line-height: 1.4; margin-top: auto; }
+  .opts { padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .alb { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line); font-size: 15px; font-weight: 700; }
+  .alb.on { box-shadow: 0 0 0 2px var(--accent); background: #fff; }
+  .alb small { margin-left: auto; font-size: 12px; color: var(--mute); font-weight: 600; }
+  .sr { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; font-weight: 600; }
+  .sr small { display: block; font-size: 12px; color: var(--mute); font-weight: 600; }
+  .toggle { width: 44px; height: 26px; border-radius: 999px; background: var(--line-2); position: relative; margin-left: auto; flex: none; }
+  .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .toggle.on { background: #1FA36E; } .toggle.on::after { left: 21px; }
+  .go { height: 54px; border-radius: 16px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; font-size: 17px; margin-top: auto; }
+  .go svg { width: 20px; height: 20px; }
+  .hand { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: var(--bg); font-size: 13px; font-weight: 600; color: var(--ink-2); line-height: 1.4; }
+  .hand svg.qr { width: 72px; height: 72px; flex: none; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .up { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  .pick, .opts { overflow: visible; padding: 16px; }
+  .grid { grid-template-columns: repeat(3, 1fr); }
+  .hand { display: none; }
+}
+</style>
+</head>
+<body data-view="photos" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar" data-custom>
+      <a class="btn" href="photos.html"><i data-i="left"></i>Photos</a>
+      <h1>Add photos</h1>
+    </header>
+    <div class="content">
+      <div class="up">
+        <section class="card pick">
+          <h3>12 selected <small>4 of 11 uploaded</small></h3>
+          <div class="grid" id="grid"></div>
+          <div class="note">Photos are resized on this device before upload (a screen-size copy and a thumbnail, WebP), and the date taken is kept for “On this day”. Duplicates are skipped.</div>
+        </section>
+        <section class="card opts">
+          <h3>Album</h3>
+          <div class="alb on">🍂 Fall 2026<small>new</small></div>
+          <div class="alb">🏖️ Summer at the lake<small>214</small></div>
+          <div class="alb">🎒 School year<small>96</small></div>
+          <div class="alb" style="color:var(--mute)">＋ New album</div>
+          <div class="sr"><span>Keep originals<small>Full-size files in storage. Not shown on the frame.</small></span><span class="toggle"></span></div>
+          <div class="sr"><span>Remove exact location<small>Keeps the place name, drops GPS</small></span><span class="toggle on"></span></div>
+          <div class="hand"><svg class="qr"></svg><span>Photos usually live on your phone. Scan to add them from there.</span></div>
+          <div class="go"><i data-i="share"></i>Upload 11 photos</div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div></div>
+<script>
+  var seeds = ['pumpkin-patch', 'autumn-walk', 'forest-path', 'apple-orchard', 'leaf-pile', 'harvest-table', 'hike-trail', 'campfire', 'misty-lake', 'cider-mill', 'bike-ride', 'maple-tree'];
+  document.getElementById('grid').innerHTML = seeds.map(function (s, i) {
+    var st = i < 4 ? '<span class="ok">' + MockIcon('check') + '</span>' : i === 4 ? '<span class="pr"><i style="width:60%"></i></span>' : i === 7 ? '' : '<span class="pr"><i style="width:0"></i></span>';
+    return '<div class="th' + (i === 7 ? ' dup' : '') + '" style="background-image:url(https://picsum.photos/seed/' + s + '/240/240)">' + st + '</div>';
+  }).join('') + '<div class="drop"><span><i data-i="plus"></i>Choose more</span></div>';
+</script>
+</body>
+</html>

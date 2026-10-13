@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review recipe · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<link rel="stylesheet" href="recipe-form.css">
+<script src="shell.js"></script>
+<style>
+  .src { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line); }
+  .src .ic { width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #F58529, #DD2A7B 50%, #8134AF); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 14px; flex: none; }
+  .src b { display: block; font-size: 15px; }
+  .src small { font-size: 12px; color: var(--mute); font-weight: 600; }
+  .warn { background: #FFF4DA; color: #7A5200; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 600; line-height: 1.45; display: flex; gap: 8px; }
+  .warn svg { width: 18px; height: 18px; flex: none; }
+  .count { display: flex; gap: 8px; }
+  .count span { flex: 1; text-align: center; padding: 10px 6px; border-radius: 12px; background: var(--bg); font-size: 12px; font-weight: 700; color: var(--mute); }
+  .count b { display: block; font-size: 20px; color: var(--ink); }
+  .count .g b { color: #B57A00; } .count .m b { color: #D93036; }
+  .ln.guess .parsed { color: #8A5700; background: #FFF0D2; }
+  .ln.miss { background: #FFF6F6; margin: 0 -12px; padding: 8px 12px; }
+  .ln.miss .parsed { color: #B4232A; background: #FDE7E8; }
+  .handoff { font-size: 12px; color: var(--mute); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .handoff svg { width: 14px; height: 14px; }
+</style>
+</head>
+<body data-view="book" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar" data-custom>
+      <a class="btn" href="add-recipe.html"><i data-i="left"></i>Back</a>
+      <h1>Check the draft</h1>
+      <div class="grow"></div>
+      <button class="btn del">Discard</button>
+      <a class="btn dark" href="recipe.html"><i data-i="check"></i>Save recipe</a>
+    </header>
+    <div class="content">
+      <div class="form">
+        <section class="card fcol">
+          <div class="src"><span class="ic">IG</span><div><b>Crispy gochujang tofu</b><small>From a pasted Instagram caption</small></div></div>
+          <div class="warn"><i data-i="sparkle"></i><span>Read by AI from the caption. Check the highlighted lines. Nothing is saved until you tap Save recipe.</span></div>
+          <div class="count"><span>Read<b>9</b></span><span class="g">Guessed<b>1</b></span><span class="m">No amount<b>1</b></span></div>
+          <div class="photo"><div class="art" style="background:#FDE1E1">🍚</div><div><b>No photo in the caption</b><span>Add a photo · Pick an emoji</span></div></div>
+          <div class="three">
+            <label class="f">Serves<div class="in">4</div></label>
+            <label class="f">Prep<div class="in">10 min</div></label>
+            <label class="f">Cook<div class="in">20 min</div></label>
+          </div>
+          <div class="handoff"><i data-i="phone"></i>Started on Kitchen frame · finish here or on any phone</div>
+        </section>
+        <section class="card fcol">
+          <h3>Ingredients <small>tap a line to fix it</small></h3>
+          <div class="lines">
+            <div class="ln"><span class="raw">1 block extra-firm tofu, pressed</span><span class="parsed"><b>1 block</b> tofu</span></div>
+            <div class="ln"><span class="raw">2 tbsp cornstarch</span><span class="parsed"><b>2 tbsp</b> cornstarch</span></div>
+            <div class="ln guess"><span class="raw">3 tbsp gochujang</span><span class="parsed">Guessed amount</span></div>
+            <div class="ln"><span class="raw">2 tbsp soy sauce</span><span class="parsed"><b>2 tbsp</b> soy sauce</span></div>
+            <div class="ln miss"><span class="raw">rice vinegar</span><span class="parsed">No amount</span></div>
+            <div class="ln"><span class="raw">1 tbsp honey</span><span class="parsed"><b>1 tbsp</b> honey</span></div>
+            <div class="ln"><span class="raw">2 cloves garlic, grated</span><span class="parsed"><b>2 cloves</b> garlic</span></div>
+            <div class="ln"><span class="raw">2 green onions, sliced</span><span class="parsed"><b>2</b> green onions</span></div>
+            <div class="ln"><span class="raw">Steamed rice, to serve</span><span class="parsed none">no amount</span></div>
+          </div>
+        </section>
+        <section class="card fcol">
+          <h3>Steps</h3>
+          <div class="lines steps">
+            <div class="ln"><span class="n">1</span><span>Cut the tofu into cubes and toss with the cornstarch.</span></div>
+            <div class="ln"><span class="n">2</span><span>Pan-fry in a little oil for 10 minutes, turning, until crisp.</span></div>
+            <div class="ln"><span class="n">3</span><span>Whisk the gochujang, soy sauce, rice vinegar, honey and garlic.</span></div>
+            <div class="ln"><span class="n">4</span><span>Pour the sauce over and toss for 1 minute until glossy.</span></div>
+            <div class="ln"><span class="n">5</span><span>Serve over rice with the green onions.</span></div>
+          </div>
+          <label class="f">Title<div class="in">Crispy gochujang tofu</div></label>
+          <label class="f">Tags<div class="chips"><span class="chip">Weeknight ✕</span><span class="chip">Vegetarian ✕</span><span class="chip add">+ Tag</span></div></label>
+        </section>
+      </div>
+    </div>
+  </div>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lists · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .lists { display: grid; grid-template-columns: 250px 1fr; gap: 20px; height: 100%; }
+  .side { padding: 14px 10px; display: flex; flex-direction: column; gap: 4px; }
+  .side .label { padding: 6px 12px 8px; }
+  .li { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--r-m); font-size: 17px; font-weight: 600; }
+  .li .em { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; font-size: 20px; background: var(--surface-2); }
+  .li span:nth-child(2) { flex: 1; }
+  .li .n { font-size: 14px; color: var(--mute); font-weight: 700; }
+  .li.on { background: var(--bg); }
+  .li.on .em { background: #FFF0D2; }
+  .side .new { margin-top: auto; color: var(--mute); }
+  .side .new .em { background: none; box-shadow: inset 0 0 0 2px var(--line-2); }
+
+  .panel { padding: 22px 26px; display: flex; flex-direction: column; min-height: 0; min-width: 0; }
+  .ph { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .ph h2 { font-size: 28px; font-weight: 700; flex: 1; }
+  .ph h2 small { font-size: 16px; color: var(--mute); font-weight: 600; margin-left: 8px; }
+  .add { flex: none; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 18px; border-radius: 16px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); font-size: 18px; color: #B0AA9F; font-weight: 500; }
+  .add svg { color: var(--mute); }
+  .usuals { display: flex; gap: 8px; margin: 10px 0 12px; align-items: center; }
+  .usuals .label { margin-right: 4px; }
+  .usuals span:not(.label) { padding: 7px 14px; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--line-2); font-size: 14px; font-weight: 700; color: var(--ink-2); }
+  .cats { columns: 3; column-gap: 28px; }
+  .cats h3 { break-after: avoid; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); padding: 12px 0 4px; display: flex; gap: 8px; align-items: center; }
+  .item { break-inside: avoid; display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 17px; font-weight: 600; }
+  .item .check { width: 26px; height: 26px; border-width: 2px; }
+  .item .q { margin-left: auto; font-size: 13px; color: var(--mute); font-weight: 700; }
+  .item small { display: block; font-size: 12px; color: var(--mute); font-weight: 600; }
+  .item.done { color: var(--mute); text-decoration: line-through; }
+  .item.done .check { background: #F0A01A; border-color: #F0A01A; }
+  .who-added { width: 20px; height: 20px; font-size: 9px; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .lists { display: flex; flex-direction: column; gap: 12px; height: auto; }
+  .side { flex-direction: row; overflow-x: auto; padding: 6px; gap: 6px; scrollbar-width: none; }
+  .side .label, .side .new { display: none; }
+  .li { flex: none; padding: 8px 12px 8px 8px; font-size: 15px; }
+  .li .em { width: 30px; height: 30px; font-size: 17px; }
+  .panel { padding: 16px; }
+  .ph h2 { font-size: 22px; }
+  .ph .btn { padding: 0 12px; }
+  .cats { columns: 1; }
+  .usuals { overflow-x: auto; scrollbar-width: none; } .usuals span { white-space: nowrap; flex: none; }
+  .ph h2 small { display: none; }
+}
+</style>
+</head>
+<body data-view="list" data-title="Lists" data-avatars="off">
+<div class="viewport"><div class="frame">
+  <nav class="rail"></nav>
+  <div class="main">
+    <header class="topbar"></header>
+    <div class="content">
+      <div class="lists">
+        <aside class="card side">
+          <div class="label">Google Tasks lists</div>
+          <div class="li on"><span class="em">🛒</span><span>Groceries</span><span class="n">20</span></div>
+          <div class="li"><span class="em">📦</span><span>Costco</span><span class="n">6</span></div>
+          <div class="li"><span class="em">🔨</span><span>Hardware store</span><span class="n">3</span></div>
+          <div class="li"><span class="em">🏡</span><span>Weekend to-dos</span><span class="n">5</span></div>
+          <div class="li"><span class="em">🎁</span><span>Gift ideas</span><span class="n">4</span></div>
+          <div class="li"><span class="em">🧳</span><span>Montréal packing</span><span class="n">9</span></div>
+          <div class="li new"><span class="em"><i data-i="plus"></i></span><span>New list</span></div>
+        </aside>
+
+        <section class="card panel">
+          <div class="ph"><h2 id="ltitle">Groceries<small>20 items</small></h2><button class="btn"><i data-i="check"></i>Clear 3 checked</button></div>
+          <div class="add"><i data-i="plus"></i>Add an item…</div>
+          <div class="usuals" id="usuals"><span class="label">Usuals</span><span>+ Milk</span><span>+ Eggs</span><span>+ Bananas</span><span>+ Bread</span><span>+ Coffee</span><span>+ Yogurt</span><span>+ Apples</span></div>
+          <div class="cats" id="cats"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<script>
+  // One flat list in Google Tasks order, shown in three columns. Ticked items stay visible at the end
+  // until someone taps "Clear checked". Google Tasks has no sections, so there are no headings.
+  var G = [
+    ['Birthday candles', '', 'just added'], ['Sparkling water', '×12', 'just added'],
+    ['Bananas', '1 bunch', 'not too ripe'], ['Baby spinach'], ['Avocados', '3'], ['Honeycrisp apples', '6'], ['Limes', '4'],
+    ['Sourdough loaf'], ['Chicken thighs', '1 kg', 'boneless'], ['Salmon fillets', '2'],
+    ['Greek yogurt'], ['Aged cheddar'], ['Sour cream'],
+    ['Rigatoni', '2'], ['Coffee beans', '', 'dark roast'], ['Black beans', '2'],
+    ['Frozen peas'], ['Waffles'], ['Dish soap'], ['Sandwich bags'],
+    ['Lemons', '', '', 1], ['Tortillas', 'large', '', 1], ['Butter', '', '', 1]
+  ];
+  function item(it) {
+    return '<div class="item' + (it[3] ? ' done' : '') + '"><span class="check">' + MockIcon('check') + '</span><span>' + it[0] +
+      (it[2] ? '<small>' + it[2] + '</small>' : '') + '</span>' + (it[1] ? '<span class="q">' + it[1] + '</span>' : '') + '</div>';
+  }
+  document.getElementById('cats').innerHTML = G.map(item).join('');
+</script>
+</body>
+</html>

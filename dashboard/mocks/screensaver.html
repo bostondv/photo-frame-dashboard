@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Screensaver · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .photo { position: absolute; inset: 0; background: #222 center/cover url(https://picsum.photos/seed/cottage-dock/1280/800); }
+  .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0) 50%, rgba(0,0,0,.6) 100%); }
+  .clock { position: absolute; left: 56px; bottom: 48px; color: #fff; text-shadow: 0 2px 20px rgba(0,0,0,.25); }
+  .clock .t { font-size: 148px; font-weight: 600; letter-spacing: -.04em; line-height: .9; font-variant-numeric: tabular-nums; }
+  .clock .t span { font-size: 40px; font-weight: 600; letter-spacing: 0; margin-left: 8px; }
+  .clock .d { font-size: 28px; font-weight: 600; margin-top: 12px; display: flex; align-items: center; gap: 18px; }
+  .clock .d .w { display: flex; align-items: center; gap: 8px; }
+  .clock .d svg { width: 36px; height: 36px; }
+  .cap { position: absolute; right: 48px; bottom: 52px; color: #fff; text-align: right; }
+  .cap b { font-family: var(--display); font-size: 30px; font-weight: 400; display: block; }
+  .cap small { font-size: 16px; font-weight: 600; opacity: .85; }
+  .next { position: absolute; top: 36px; right: 40px; display: flex; align-items: center; gap: 12px; padding: 10px 20px 10px 10px; border-radius: 999px;
+    background: rgba(20,18,16,.45); color: #fff; font-size: 18px; font-weight: 600; }
+  .next .av { box-shadow: none; background: var(--c); color: #fff; width: 38px; height: 38px; font-size: 15px; }
+  .next b { font-weight: 800; }
+  .dots { position: absolute; top: 46px; left: 56px; display: flex; gap: 6px; }
+  .dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.5); }
+  .dots i.on { background: #fff; width: 20px; border-radius: 3px; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .clock { left: 22px; bottom: 34px; }
+  .clock .t { font-size: 84px; } .clock .t span { font-size: 24px; }
+  .clock .d { font-size: 18px; gap: 10px; } .clock .d svg { width: 26px; height: 26px; }
+  .cap { right: auto; left: 22px; bottom: auto; top: 76px; text-align: left; }
+  .cap b { font-size: 22px; }
+  .next { top: 20px; right: 16px; font-size: 14px; }
+  .dots { top: 30px; left: 22px; }
+}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="frame bleed">
+  <a href="home.html" class="photo" aria-label="Wake"></a>
+  <div class="shade"></div>
+  <div class="dots"><i></i><i></i><i class="on"></i><i></i><i></i></div>
+  <div class="next p-poppy"><div class="av">P</div><span><b>Piano lesson</b> in 25 min</span></div>
+  <div class="clock">
+    <div class="t">3:20<span>PM</span></div>
+    <div class="d">Monday, October 12 <span class="w"><i data-i="partly"></i>14°</span></div>
+  </div>
+  <div class="cap"><b>Lake of Bays</b><small>August 2023 · added by Boston</small></div>
+</div></div>
+</body>
+</html>

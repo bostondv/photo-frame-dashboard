@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add event · Family Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap">
+<link rel="stylesheet" href="mocks.css">
+<script src="shell.js"></script>
+<style>
+  .under { position: absolute; inset: 0; width: 1280px; height: 800px; border: 0; pointer-events: none; }
+  .scrim { position: absolute; inset: 0; background: rgba(28, 26, 22, .42); }
+  .sheet {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 720px; background: var(--surface); border-radius: var(--r-xl); box-shadow: var(--shadow-lg);
+    padding: 26px 30px 24px;
+  }
+  .sheet header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .sheet header h2 { font-size: 24px; font-weight: 700; }
+  .title-in { font-size: 30px; font-weight: 700; padding: 6px 0 14px; border-bottom: 2px solid var(--focus); display: flex; align-items: center; }
+  .title-in .caret { width: 2px; height: 32px; background: var(--focus); margin-left: 2px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .who { display: flex; gap: 10px; margin: 18px 0 6px; }
+  .who .chip { display: flex; align-items: center; gap: 8px; padding: 6px 16px 6px 6px; border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); font-weight: 700; font-size: 16px; }
+  .who .chip.on { background: var(--soft); color: var(--tx); box-shadow: inset 0 0 0 2px var(--c); }
+  .who .chip .av { width: 34px; height: 34px; font-size: 14px; }
+  .fields { margin-top: 12px; border-top: 1px solid var(--line); }
+  .f { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 8px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 18px; font-weight: 600; }
+  .f svg { color: var(--mute); }
+  .f .v { color: var(--mute); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .f .ph { color: #B9B3A8; font-weight: 500; }
+  .times { display: flex; align-items: center; gap: 10px; }
+  .times .t { background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); padding: 8px 14px; border-radius: 12px; font-weight: 700; }
+  .toggle { width: 52px; height: 30px; border-radius: 999px; background: var(--line-2); position: relative; }
+  .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px; }
+  .actions .btn { height: 56px; padding: 0 28px; font-size: 18px; }
+</style>
+<style>
+/* phone layout (this page) */
+@media (max-width: 700px) {
+  .sheet { left: 0; right: 0; top: auto; bottom: 0; transform: none; width: auto; max-height: 92%; overflow-y: auto; border-radius: 26px 26px 0 0; padding: 18px 16px 22px; }
+  .title-in { font-size: 24px; }
+  .who { flex-wrap: wrap; }
+  .under { width: 100%; height: 100%; }
+  .f { grid-template-columns: 32px 1fr auto; font-size: 16px; }
+  .f .v { font-size: 13px; }
+  .times { flex-wrap: wrap; gap: 6px; }
+}
+</style>
+</head>
+<body data-view="calendar">
+<div class="viewport"><div class="frame bleed">
+  <iframe class="under" src="calendar-week.html" tabindex="-1" aria-hidden="true"></iframe>
+  <div class="scrim"></div>
+  <div class="sheet" role="dialog" aria-label="New event">
+    <header><h2>New event</h2><button class="btn icon"><i data-i="x"></i></button></header>
+    <div class="title-in">Swim meet<span class="caret"></span></div>
+    <div class="who">
+      <span class="chip p-boston"><span class="av">B</span>Boston</span>
+      <span class="chip on p-andrea"><span class="av">A</span>Andrea</span>
+      <span class="chip on p-georgia"><span class="av">G</span>Georgia</span>
+      <span class="chip p-poppy"><span class="av">P</span>Poppy</span>
+      <span class="chip p-fam"><span class="av">F</span>Everyone</span>
+    </div>
+    <div class="fields">
+      <div class="f"><i data-i="clock"></i><div class="times"><span class="t">Sat, Oct 24</span><span class="t">9:00 AM</span><span class="muted">→</span><span class="t">11:00 AM</span></div><div class="v">All day <span class="toggle"></span></div></div>
+      <div class="f"><i data-i="repeat"></i><span>Doesn't repeat</span><span class="v"><i data-i="chevron"></i></span></div>
+      <div class="f"><i data-i="pin"></i><span>Wellesley Pool</span><span class="v"></span></div>
+      <div class="f"><i data-i="calendar"></i><span>Family calendar</span><span class="v"><i data-i="chevron"></i></span></div>
+      <div class="f"><i data-i="note"></i><span class="ph">Add a note</span><span class="v"></span></div>
+    </div>
+    <div class="who-adding" style="margin-top:16px">Who’s adding? <span class="av p-boston">B</span><span class="av pick p-andrea">A</span><span class="av p-georgia">G</span><span class="av p-poppy">P</span><span class="skip">or just “Kitchen frame”</span></div>
+    <div class="actions"><button class="btn">Cancel</button><button class="btn dark">Save event</button></div>
+  </div>
+</div></div>
+</body>
+</html>
